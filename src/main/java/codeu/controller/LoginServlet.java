@@ -59,8 +59,9 @@ public class LoginServlet extends HttpServlet {
   }
 
   /**
-   * This function fires when a user submits the login form. It gets the username from the submitted
-   * form data, and then adds it to the session so we know the user is logged in.
+   * This function fires when a user submits the login form. It gets the username and the password
+   * from the submitted form data, then it checks that they are valid, either way it adds the username
+   * to the session to know that the user is logged in or that an error was thrown to the user.
    */
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -68,8 +69,14 @@ public class LoginServlet extends HttpServlet {
     String username = request.getParameter("username");
     String password = request.getParameter("password");
 
+    if (username == "") {
+      request.setAttribute("error", "Please enter a username.");
+      request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
+      return;
+    }
+
     if (password == "") {
-      request.setAttribute("error", "Please enter a password");
+      request.setAttribute("error", "Please enter a password.");
       request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
       return;
     }
@@ -80,15 +87,18 @@ public class LoginServlet extends HttpServlet {
       return;
     }
 
-    
-
-    if (!userStore.isUserRegistered(username)) {
-      User user = new User(UUID.randomUUID(), username, Instant.now(), password);
-      userStore.addUser(user);
+    if (userStore.isUserRegistered(username)) {
+      User user = userStore.getUser(username);
+      if (password.equals(user.getPassword())) {
+        request.getSession().setAttribute("user", username);
+        response.sendRedirect("/conversations");
+      } else {
+        request.setAttribute("error", "Invalid password.");
+        request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
+      }
+    } else {
+      request.setAttribute("error", "That username was not found");
+      request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
     }
-
-    request.getSession().setAttribute("user", username);
-    request.getSession().setAttribute("password", password);
-    response.sendRedirect("/conversations");
   }
 }
