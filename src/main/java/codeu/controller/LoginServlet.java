@@ -69,6 +69,18 @@ public class LoginServlet extends HttpServlet {
     String username = request.getParameter("username");
     String password = request.getParameter("password");
 
+    if (username == "") {
+      request.setAttribute("error", "Please enter a username.");
+      request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
+      return;
+    }
+
+    if (password == "") {
+      request.setAttribute("error", "Please enter a password.");
+      request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
+      return;
+    }
+
     if (!username.matches("[\\w*\\s*]*")) {
       request.setAttribute("error", "Please enter only letters, numbers, and spaces.");
       request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);

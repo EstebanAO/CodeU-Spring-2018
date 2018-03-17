@@ -135,6 +135,36 @@ public class LoginServletTest {
   }
 
   @Test
+  public void testDoPost_BlankUsername() throws IOException, ServletException {
+    Mockito.when(mockRequest.getParameter("username")).thenReturn("");
+    Mockito.when(mockRequest.getParameter("password")).thenReturn("test password");
+
+    UserStore mockUserStore = Mockito.mock(UserStore.class);
+
+    loginServlet.setUserStore(mockUserStore);
+
+    loginServlet.doPost(mockRequest, mockResponse);
+
+    Mockito.verify(mockRequest).setAttribute("error", "Please enter a username.");
+    Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
+  }
+
+  @Test
+  public void testDoPost_BlankPassword() throws IOException, ServletException {
+    Mockito.when(mockRequest.getParameter("username")).thenReturn("test username");
+    Mockito.when(mockRequest.getParameter("password")).thenReturn("");
+
+    UserStore mockUserStore = Mockito.mock(UserStore.class);
+
+    loginServlet.setUserStore(mockUserStore);
+
+    loginServlet.doPost(mockRequest, mockResponse);
+
+    Mockito.verify(mockRequest).setAttribute("error", "Please enter a password.");
+    Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
+  }
+
+  @Test
   public void testDoPost_NotExistingUser() throws IOException, ServletException {
     Mockito.when(mockRequest.getParameter("username")).thenReturn("unregistered test username");
     Mockito.when(mockRequest.getParameter("password")).thenReturn("irrelevant test password");
