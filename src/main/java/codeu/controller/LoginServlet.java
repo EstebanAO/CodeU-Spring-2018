@@ -67,7 +67,8 @@ public class LoginServlet extends HttpServlet {
       throws IOException, ServletException {
     String username = request.getParameter("username");
     String password = request.getParameter("password");
-    if (password=="") {
+
+    if (password == "") {
       request.setAttribute("error", "Please enter a password");
       request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
       return;
