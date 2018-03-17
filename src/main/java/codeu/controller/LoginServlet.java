@@ -66,6 +66,13 @@ public class LoginServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
     String username = request.getParameter("username");
+    String password = request.getParameter("password");
+
+    if (password == "") {
+      request.setAttribute("error", "Please enter a password");
+      request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
+      return;
+    }
 
     if (!username.matches("[\\w*\\s*]*")) {
       request.setAttribute("error", "Please enter only letters, numbers, and spaces.");
@@ -73,12 +80,15 @@ public class LoginServlet extends HttpServlet {
       return;
     }
 
+    
+
     if (!userStore.isUserRegistered(username)) {
-      User user = new User(UUID.randomUUID(), username, Instant.now());
+      User user = new User(UUID.randomUUID(), username, Instant.now(), password);
       userStore.addUser(user);
     }
 
     request.getSession().setAttribute("user", username);
+    request.getSession().setAttribute("password", password);
     response.sendRedirect("/conversations");
   }
 }
