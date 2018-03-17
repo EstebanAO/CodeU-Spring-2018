@@ -39,7 +39,7 @@ public class DefaultDataStore {
    * Default user count. Only used if USE_DEFAULT_DATA is true. Make sure this is <= the number of
    * names in the getRandomUsernames() function.
    */
-  private int DEFAULT_USER_COUNT = 20;
+  private int DEFAULT_USER_COUNT = 9;
 
   /**
    * Default conversation count. Only used if USE_DEFAULT_DATA is true. Each conversation is
@@ -96,9 +96,13 @@ public class DefaultDataStore {
 
     List<String> randomUsernames = getRandomUsernames();
     Collections.shuffle(randomUsernames);
+  
+    List<String> randomPasswords = getRandomUPassword();
+    Collections.shuffle(randomPasswords);
+  
 
     for (int i = 0; i < DEFAULT_USER_COUNT; i++) {
-      User user = new User(UUID.randomUUID(), randomUsernames.get(i), Instant.now());
+      User user = new User(UUID.randomUUID(), randomUsernames.get(i), Instant.now(), randomPasswords.get(i));
       PersistentStorageAgent.getInstance().writeThrough(user);
       users.add(user);
     }
@@ -166,6 +170,19 @@ public class DefaultDataStore {
     randomUsernames.add("Mary");
     randomUsernames.add("Karen");
     return randomUsernames;
+  }
+  private List<String> getRandomUPassword() {
+    List<String> randomPasswords = new ArrayList<>();
+    randomPasswords.add("pass1");
+    randomPasswords.add("pass2");
+    randomPasswords.add("pass3");
+    randomPasswords.add("pass4");
+    randomPasswords.add("pass5");
+    randomPasswords.add("pass6");
+    randomPasswords.add("pass7");
+    randomPasswords.add("pass8");
+    randomPasswords.add("pass9");
+    return randomPasswords;
   }
 
   private String getRandomMessageContent() {
