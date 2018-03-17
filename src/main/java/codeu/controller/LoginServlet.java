@@ -59,9 +59,9 @@ public class LoginServlet extends HttpServlet {
   }
 
   /**
-   * This function fires when a user submits the login form. It gets the username and the Password
-   * from the submitted form data, then it checkshat they are valid, either way it adds the username
-   * to the session to know that the user is logged in or that and error was thrown to the user.
+   * This function fires when a user submits the login form. It gets the username and the password
+   * from the submitted form data, then it checks that they are valid, either way it adds the username
+   * to the session to know that the user is logged in or that an error was thrown to the user.
    */
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response)
@@ -69,18 +69,22 @@ public class LoginServlet extends HttpServlet {
     String username = request.getParameter("username");
     String password = request.getParameter("password");
 
+    if (!username.matches("[\\w*\\s*]*")) {
+      request.setAttribute("error", "Please enter only letters, numbers, and spaces.");
+      request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
+      return;
+    }
+
     if (userStore.isUserRegistered(username)) {
       User user = userStore.getUser(username);
-      if(password.equals(user.getPassword())) {
+      if (password.equals(user.getPassword())) {
         request.getSession().setAttribute("user", username);
         response.sendRedirect("/conversations");
-      }
-      else {
+      } else {
         request.setAttribute("error", "Invalid password.");
         request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
       }
-    }
-    else {
+    } else {
       request.setAttribute("error", "That username was not found");
       request.getRequestDispatcher("/WEB-INF/view/login.jsp").forward(request, response);
     }

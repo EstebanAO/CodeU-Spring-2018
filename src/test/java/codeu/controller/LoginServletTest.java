@@ -53,7 +53,6 @@ public class LoginServletTest {
     Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
   }
 
-  @Ignore
   @Test
   public void testDoPost_BadUsername() throws IOException, ServletException {
     Mockito.when(mockRequest.getParameter("username")).thenReturn("bad !@#$% username");
