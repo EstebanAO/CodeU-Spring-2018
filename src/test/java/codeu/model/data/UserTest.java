@@ -26,8 +26,9 @@ public class UserTest {
     UUID id = UUID.randomUUID();
     String name = "test_username";
     Instant creation = Instant.now();
+    String password = "test_password";
 
-    User user = new User(id, name, creation);
+    User user = new User(id, name, creation, password);
 
     Assert.assertEquals(id, user.getId());
     Assert.assertEquals(name, user.getName());

@@ -8,27 +8,32 @@ import javax.servlet.http.HttpServletResponse;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 public class RegisterServletTest {
 
- private RegisterServlet registerServlet;
- private HttpServletRequest mockRequest;
- private PrintWriter mockPrintWriter;
- private HttpServletResponse mockResponse;
+  private RegisterServlet registerServlet;
 
- @Before
- public void setup() throws IOException {
-   registerServlet = new RegisterServlet();
-   mockRequest = Mockito.mock(HttpServletRequest.class);
-   mockPrintWriter = Mockito.mock(PrintWriter.class);
-   mockResponse = Mockito.mock(HttpServletResponse.class);
-   Mockito.when(mockResponse.getWriter()).thenReturn(mockPrintWriter);
- }
+  @Mock
+  private HttpServletRequest mockRequest;
 
- @Test
- public void testDoGet() throws IOException, ServletException {
-   registerServlet.doGet(mockRequest, mockResponse);
+  @Mock
+  private PrintWriter mockPrintWriter;
 
-   Mockito.verify(mockPrintWriter).println("<h1>RegisterServlet GET request.</h1>");
- }
+  @Mock
+  private HttpServletResponse mockResponse;
+
+  @Before
+  public void setup() throws IOException {
+    registerServlet = new RegisterServlet();
+    MockitoAnnotations.initMocks(this);
+    Mockito.when(mockResponse.getWriter()).thenReturn(mockPrintWriter);
+  }
+
+  @Test
+  public void testDoGet() throws IOException, ServletException {
+    registerServlet.doGet(mockRequest, mockResponse);
+    Mockito.verify(mockPrintWriter).println("<h1>RegisterServlet GET request.</h1>");
+  }
 }
