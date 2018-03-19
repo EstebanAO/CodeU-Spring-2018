@@ -5,6 +5,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.time.Instant;
+import java.util.UUID;
+import codeu.model.data.User;
 import codeu.model.store.basic.UserStore;
 
 /**
@@ -59,7 +62,7 @@ public class RegisterServlet extends HttpServlet {
       return;
     }
 
-    User user = new User(UUID.randomUUID(), username, password, Instant.now());
+    User user = new User(UUID.randomUUID(), username, Instant.now(), password);
     userStore.addUser(user);
 
     response.sendRedirect("/login");
