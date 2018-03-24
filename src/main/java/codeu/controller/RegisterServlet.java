@@ -16,7 +16,7 @@ import java.util.UUID;
 */
 public class RegisterServlet extends HttpServlet {
 
-  private UserStore userStore = UserStore.getInstance();
+  private final UserStore userStore = UserStore.getInstance();
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response)

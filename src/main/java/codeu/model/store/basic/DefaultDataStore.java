@@ -75,11 +75,6 @@ public class DefaultDataStore {
       addRandomConversations();
       addRandomMessages();
     }
-
-    // User user = new User(UUID.randomUUID(),
-    //   randomUsernames.get(i),
-    //   BCrypt.hashpw("password", BCrypt.gensalt()),
-    //   Instant.now());
   }
 
   public boolean isValid() {
@@ -108,8 +103,6 @@ public class DefaultDataStore {
 
 
     for (int i = 0; i < DEFAULT_USER_COUNT; i++) {
-      // User user = new User(UUID.randomUUID(), randomUsernames.get(i), Instant.now(), randomPasswords.get(i));
-      // PersistentStorageAgent.getInstance().writeThrough(user);
       User user = new User(UUID.randomUUID(),
         randomUsernames.get(i),
         Instant.now(),
