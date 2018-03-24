@@ -28,6 +28,7 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.junit.Ignore;
+import org.mindrot.jbcrypt.BCrypt;
 
 public class LoginServletTest {
 
@@ -100,7 +101,7 @@ public class LoginServletTest {
 
     User mockUser = Mockito.mock(User.class);
     Mockito.when(mockUserStore.getUser("test username")).thenReturn(mockUser);
-    Mockito.when(mockUser.getPassword()).thenReturn("test password");
+    Mockito.when(mockUser.getPassword()).thenReturn(BCrypt.hashpw("test password", BCrypt.gensalt()));
 
     loginServlet.setUserStore(mockUserStore);
 
@@ -124,7 +125,7 @@ public class LoginServletTest {
     User mockUser = Mockito.mock(User.class);
     Mockito.when(mockUserStore.getUser("test username")).thenReturn(mockUser);
     Mockito.when(mockUser.getName()).thenReturn("test username");
-    Mockito.when(mockUser.getPassword()).thenReturn("correct test password");
+    Mockito.when(mockUser.getPassword()).thenReturn(BCrypt.hashpw("correct test password", BCrypt.gensalt()));
 
     loginServlet.setUserStore(mockUserStore);
 
