@@ -1,5 +1,7 @@
 package codeu.controller;
 
+import codeu.model.data.User;
+import codeu.model.store.basic.UserStore;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -9,15 +11,13 @@ import java.time.Instant;
 import java.util.UUID;
 import codeu.model.data.User;
 import codeu.model.store.basic.UserStore;
+import org.mindrot.jbcrypt.BCrypt;
 
 /**
 * Servlet class responsible for user registration.
 */
 public class RegisterServlet extends HttpServlet {
-
-  /**
-  * Store class that gives access to Users.
-  */
+  
   private UserStore userStore;
 
   /**
@@ -49,6 +49,7 @@ public class RegisterServlet extends HttpServlet {
     throws IOException, ServletException {
     String username = request.getParameter("username");
     String password = request.getParameter("password");
+    String passwordHash = BCrypt.hashpw(password, BCrypt.gensalt());
     
     if (!username.matches("[\\w*\\s*]*")) {
       request.setAttribute("error", "Please enter only letters, numbers, and spaces.");
@@ -62,9 +63,8 @@ public class RegisterServlet extends HttpServlet {
       return;
     }
 
-    User user = new User(UUID.randomUUID(), username, Instant.now(), password);
+    User user = new User(UUID.randomUUID(), username, Instant.now(), passwordHash);
     userStore.addUser(user);
-
     response.sendRedirect("/login");
   }
 }
