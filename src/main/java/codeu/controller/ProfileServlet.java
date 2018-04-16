@@ -42,12 +42,12 @@ public class ProfileServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
         String requestUrl = request.getRequestURI();
-        String userName = requestUrl.substring(Servelets.PROFILE_PATH.length());
+        String userName = requestUrl.substring(Servlets.PROFILE_PATH.length());
         User user = userStore.getUser(userName);
         if (user == null) {
             // couldn't find user, redirect to conversation list
             System.out.println("The user " + userName + " doesn't exist. " );
-            response.sendRedirect(Servelets.CONVERSATION_PATH);
+            response.sendRedirect(Servlets.CONVERSATION_PATH);
             return;
         }
         request.setAttribute("user", user);
@@ -63,6 +63,6 @@ public class ProfileServlet extends HttpServlet {
         User user = userStore.getUser(userName);
         user.setAboutMe(aboutMe);
         userStore.updateUser(user);
-        response.sendRedirect(Servelets.PROFILE_PATH + userName);
+        response.sendRedirect(Servlets.PROFILE_PATH + userName);
     }
 }
