@@ -59,6 +59,7 @@ UserStore userStore = UserStore.getInstance();
         <a href="/register">Register</a>
       <% } %>
       <a href="/about.jsp">About</a>
+      <a href="/admin">Administrator</a>
   </nav>
 
 
