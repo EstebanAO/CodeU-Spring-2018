@@ -62,8 +62,8 @@ public class RegisterServlet extends HttpServlet {
       request.getRequestDispatcher("/WEB-INF/view/register.jsp").forward(request, response);
       return;
     }
-
-    User user = new User(UUID.randomUUID(), username, Instant.now(), passwordHash);
+    String aboutMe = "Write about you...";
+    User user = new User(UUID.randomUUID(), username, Instant.now(), passwordHash, aboutMe);
     userStore.addUser(user);
     response.sendRedirect("/login");
   }

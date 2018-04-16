@@ -14,7 +14,7 @@ import codeu.model.store.basic.UserStore;
 import org.mindrot.jbcrypt.BCrypt;
 
 /**
- * Servlet class responsible for user registration.
+ * Servlet class responsible for displaying the user profile.
  */
 public class ProfileServlet extends HttpServlet {
 
@@ -41,14 +41,28 @@ public class ProfileServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
+        String requestUrl = request.getRequestURI();
+        String userName = requestUrl.substring("/profile/".length());
+        User user = userStore.getUser(userName);
+        if (user == null) {
+            // couldn't find user, redirect to conversation list
+            System.out.println("The user " + userName + " doesn't exist. " );
+            response.sendRedirect("/conversations");
+            return;
+        }
+        request.setAttribute("user", user);
         request.getRequestDispatcher("/WEB-INF/view/profile.jsp").forward(request, response);
     }
 
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
+        String aboutMe = request.getParameter("aboutMe");
+        String userName = (String) request.getSession().getAttribute("user");
 
-
-
+        User user = userStore.getUser(userName);
+        user.setAboutMe(aboutMe);
+        userStore.updateUser(user);
+        response.sendRedirect("/profile/" + userName);
     }
 }

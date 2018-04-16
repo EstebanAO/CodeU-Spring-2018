@@ -14,7 +14,10 @@
   limitations under the License.
 --%>
 <%@ page import="java.util.List" %>
-<%@ page import="codeu.model.data.Conversation" %>
+<%@ page import="codeu.model.data.User" %>
+
+<% User user = (User) request.getAttribute("user"); %>
+
 
 <!DOCTYPE html>
 <html>
@@ -38,15 +41,23 @@
 
 <div id="container">
 
-    <% if(request.getAttribute("error") != null){ %>
+    <% if(request.getAttribute("error") != null) { %>
     <h2 style="color:red"><%= request.getAttribute("error") %></h2>
     <% } %>
 
-    <% if(request.getSession().getAttribute("user") != null){ %>
-        <h1>Profile</h1>
-    <% } else { %>
-        <h1>Profile</h1>
-    <% } %>
+    <h1><%= user.getName()%>'s Profile Page</h1>
+    <h3>About Me</h3>
+    <%= user.getAboutMe() %>
+    <br/>
+    <% if (request.getSession().getAttribute("user") != null &&
+            request.getSession().getAttribute("user").equals(user.getName())) { %>
+        <form action="/profile" method="POST">
+            <h3>Edit your About Me (Only you can see this) </h3>
+          <input type="text" name="aboutMe" id="aboutMe" size="80" value="<%= user.getAboutMe()%>">
+         <br/><br/>
+         <button type="submit">Submit</button>
+     </form>
+    <%}%>
 </div>
 </body>
 </html>
