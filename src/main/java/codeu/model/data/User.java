@@ -61,7 +61,11 @@ public class User {
     return password;
   }
   /** Retruns the aboubtMe text of the User. */
-  public String getAboutMe() { return aboutMe; }
+  public String getAboutMe() {
+    return aboutMe;
+  }
   /** Sets the aboutMe text of the User.*/
-  public void setAboutMe(String aboutMe) { this.aboutMe = aboutMe; }
+  public void setAboutMe(String aboutMe) {
+    this.aboutMe = aboutMe;
+  }
 }

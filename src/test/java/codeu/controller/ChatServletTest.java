@@ -152,7 +152,7 @@ public class ChatServletTest {
     Mockito.when(mockRequest.getRequestURI()).thenReturn("/chat/test_conversation");
     Mockito.when(mockSession.getAttribute("user")).thenReturn("test_username");
 
-    User fakeUser = new User(UUID.randomUUID(), "test_username", Instant.now(), "test_password","Write about you...");
+    User fakeUser = new User(UUID.randomUUID(), "test_username", Instant.now(), "test_password", "Write about you...");
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
 
     Conversation fakeConversation =
@@ -176,7 +176,7 @@ public class ChatServletTest {
     Mockito.when(mockRequest.getRequestURI()).thenReturn("/chat/test_conversation");
     Mockito.when(mockSession.getAttribute("user")).thenReturn("test_username");
 
-    User fakeUser = new User(UUID.randomUUID(), "test_username", Instant.now(), "test_password","Write about you...");
+    User fakeUser = new User(UUID.randomUUID(), "test_username", Instant.now(), "test_password", "Write about you...");
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
 
     Conversation fakeConversation =
