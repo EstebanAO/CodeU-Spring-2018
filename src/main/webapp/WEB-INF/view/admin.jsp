@@ -1,4 +1,8 @@
 
+<%@ page import="java.util.List" %>
+<%@ page import="codeu.model.data.User" %>
+<%@ page import="codeu.model.data.Conversation" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -26,6 +30,39 @@
 
   <div id= "container"> 
     <h1>Administrator</h1>
+
+    <% if (request.getAttribute("error") != null) { %>
+      <h2 style="color:red"><%= request.getAttribute("error") %></h2>
+    <% } %>
+
+    <%--<% if (request.getSession().getAttribute("users") !=null { %>
+        <h1>New Use})
+        --%>
+   <hr/>
+    <% 
+    List<User> users = (List<User>) request.getAttribute("users");
+    if(users == null){
+    %>
+      <p>No Users</p>
+    <%
+    }
+    
+    %>
+      <ul class="mdl-list">
+    <%
+      for(User user : users){
+      %>
+        <li><a href="/admin/<%= user.getName() %>">
+          <%= user.getName() %></a></li>
+      <%
+      
+      %>
+        </ul>
+      <%
+      }
+      %>
+      <hr/>
+  
   </div>
 
 

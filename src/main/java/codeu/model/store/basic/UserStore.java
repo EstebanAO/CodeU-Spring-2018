@@ -68,6 +68,10 @@ public class UserStore {
   public void loadTestData() {
     users.addAll(DefaultDataStore.getInstance().getAllUsers());
   }
+  public List<User> getUsers() {
+    return users;
+  }
+
 
   /**
    * Access the User object with the given name.
