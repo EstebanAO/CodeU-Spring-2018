@@ -14,6 +14,8 @@
   limitations under the License.
 --%>
 <%@ page import="java.util.List" %>
+<%@ page import="java.util.Date" %>
+<%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="codeu.model.data.Conversation" %>
 <%@ page import="codeu.model.data.Message" %>
 <%@ page import="codeu.model.store.basic.UserStore" %>
@@ -73,8 +75,11 @@ List<Message> messages = (List<Message>) request.getAttribute("messages");
       for (Message message : messages) {
         String author = UserStore.getInstance()
           .getUser(message.getAuthorId()).getName();
+        Date messageDate = Date.from(message.getCreationTime());
+        SimpleDateFormat formatter = new SimpleDateFormat("MMMM dd, hh:mm a");
+        String messageTime = formatter.format(messageDate);
     %>
-      <li><strong><%= author %>:</strong> <%= message.getContent() %></li>
+      <li><strong><%= author %></strong> <span class="time"><%= messageTime %></span>: <%= message.getContent() %></li>
     <%
       }
     %>
