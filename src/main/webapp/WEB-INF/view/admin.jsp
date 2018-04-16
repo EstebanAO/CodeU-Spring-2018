@@ -1,4 +1,7 @@
 
+<%@ page import="java.util.List" %>
+<%@ page import="codeu.model.data.Conversation" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -26,6 +29,18 @@
 
   <div id= "container"> 
     <h1>Administrator</h1>
+
+    <hr/>
+
+    <h2>Site Statistics</h2>
+    <p>Here are some site stats:</p>
+    <ul>
+      <li><strong>Users:</strong></li>
+      <li><strong>Conversations:</strong>
+        <%= request.getAttribute("conversationsCount") %>
+      </li>
+      <li><strong>Messages:</strong></li>
+    </ul>
   </div>
 
 

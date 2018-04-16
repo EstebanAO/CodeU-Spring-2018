@@ -31,5 +31,6 @@ public class AdminServletTest {
   public void testDoGet() throws IOException, ServletException {
     adminServlet.doGet(mockRequest, mockResponse);
 
-    Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);  }
+    Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
+  }
 }
