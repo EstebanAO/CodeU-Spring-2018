@@ -56,7 +56,6 @@ public class AdminServletTest {
     String fakeNewestUser = "test_user1096";
     UUID fakeMostRecentAuthor = UUID.randomUUID();
     User mockUser = Mockito.mock(User.class);
-    // User fakeUser = new User(UUID.randomUUID(), "test_username", Instant.now(), "test_password");
     String fakeMostRecentUser = "test_username";
     String fakeMostRecentTime = "April 15, 10:08 PM";
 
@@ -65,7 +64,6 @@ public class AdminServletTest {
     Mockito.when(mockMessageStore.getMessagesCount()).thenReturn(fakeMessagesCount);
     Mockito.when(mockUserStore.getNewestUser()).thenReturn(fakeNewestUser);
     Mockito.when(mockMessageStore.getMostRecentAuthor()).thenReturn(fakeMostRecentAuthor);
-    // Mockito.when(mockUserStore.getUser(fakeMostRecentAuthor)).thenReturn(fakeUser);
     Mockito.when(mockUserStore.getUser(fakeMostRecentAuthor)).thenReturn(mockUser);
     Mockito.when(mockUser.getName()).thenReturn(fakeMostRecentUser);
     Mockito.when(mockMessageStore.getMostRecentTime()).thenReturn(fakeMostRecentTime);
