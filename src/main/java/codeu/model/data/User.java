@@ -23,6 +23,7 @@ public class User {
   private final String name;
   private final String password;
   private final Instant creation;
+  private String aboutMe;
 
   /**
    * Constructs a new User.
@@ -31,12 +32,14 @@ public class User {
    * @param name the username of this User
    * @param creation the creation time of this User
    * @param password the password of this User
+   * @param aboutMe the about me text of the User Profile
    */
-  public User(UUID id, String name, Instant creation, String password) {
+  public User(UUID id, String name, Instant creation, String password, String aboutMe) {
     this.id = id;
     this.name = name;
     this.creation = creation;
     this.password = password;
+    this.aboutMe = aboutMe;
   }
 
   /** Returns the ID of this User. */
@@ -56,5 +59,13 @@ public class User {
   /** Returns the password of this User. */
   public String getPassword() {
     return password;
+  }
+  /** Retruns the aboubtMe text of the User. */
+  public String getAboutMe() {
+    return aboutMe;
+  }
+  /** Sets the aboutMe text of the User.*/
+  public void setAboutMe(String aboutMe) {
+    this.aboutMe = aboutMe;
   }
 }
