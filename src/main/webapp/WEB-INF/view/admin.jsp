@@ -35,11 +35,15 @@
     <h2>Site Statistics</h2>
     <p>Here are some site stats:</p>
     <ul>
-      <li><strong>Users:</strong></li>
+      <li><strong>Users:</strong>
+        <%= request.getAttribute("usersCount") %>
+      </li>
       <li><strong>Conversations:</strong>
         <%= request.getAttribute("conversationsCount") %>
       </li>
-      <li><strong>Messages:</strong></li>
+      <li><strong>Messages:</strong>
+        <%= request.getAttribute("messagesCount") %>
+      </li>
     </ul>
   </div>
 

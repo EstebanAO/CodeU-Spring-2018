@@ -121,4 +121,9 @@ public class UserStore {
   public void setUsers(List<User> users) {
     this.users = users;
   }
+
+  /** Returns the number of registered users. */
+  public int getUsersCount() {
+    return users != null ? users.size() : 0;
+  }
 }

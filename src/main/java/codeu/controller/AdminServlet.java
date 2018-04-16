@@ -3,7 +3,11 @@
 package codeu.controller;
 
 import codeu.model.data.Conversation;
+import codeu.model.data.Message;
+import codeu.model.data.User;
 import codeu.model.store.basic.ConversationStore;
+import codeu.model.store.basic.MessageStore;
+import codeu.model.store.basic.UserStore;
 import java.io.IOException;
 import java.util.List;
 import javax.servlet.ServletException;
@@ -16,24 +20,41 @@ import javax.servlet.http.HttpServletResponse;
   */
 public class AdminServlet extends HttpServlet {
 
+  private UserStore userStore;
+
   private ConversationStore conversationStore;
+
+  private MessageStore messageStore;
 
   @Override
   public void init() throws ServletException {
     super.init();
+    setUserStore(UserStore.getInstance());
     setConversationStore(ConversationStore.getInstance());
+    setMessageStore(MessageStore.getInstance());
+  }
+
+  void setUserStore(UserStore userStore) {
+    this.userStore = userStore;
   }
 
   void setConversationStore(ConversationStore conversationStore) {
     this.conversationStore = conversationStore;
   }
 
+  void setMessageStore(MessageStore messageStore) {
+    this.messageStore = messageStore;
+  }
+
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
-    List<Conversation> conversations = conversationStore.getAllConversations();
-    int conversationsCount = conversations != null ? conversations.size() : 0;
+    int conversationsCount = conversationStore.getConversationsCount();
+    int usersCount = userStore.getUsersCount();
+    int messagesCount = messageStore.getMessagesCount();
     request.setAttribute("conversationsCount", conversationsCount);
+    request.setAttribute("usersCount", usersCount);
+    request.setAttribute("messagesCount", messagesCount);
     request.getRequestDispatcher("/WEB-INF/view/admin.jsp").forward(request, response);
   }
 }
