@@ -46,7 +46,7 @@
       <p>No Users</p>
     <%
     }
-    
+    else{
     %>
       <ul class="mdl-list">
     <%
@@ -55,7 +55,7 @@
         <li><a href="/admin/<%= user.getName() %>">
           <%= user.getName() %></a></li>
       <%
-      
+      }
       %>
         </ul>
       <%
