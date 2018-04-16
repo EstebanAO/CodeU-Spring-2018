@@ -131,6 +131,7 @@ public class UserStore {
     return users != null ? users.size() : 0;
   }
 
+  /** Returns the newest registered user if they exist. */
   public String getNewestUser() {
     return users != null ? users.get(users.size() - 1).getName() : "";
   }
