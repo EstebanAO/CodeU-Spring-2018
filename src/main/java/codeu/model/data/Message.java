@@ -70,6 +70,7 @@ public class Message {
     return creation;
   }
 
+  /** Returns a formatted version of the creation time of this Message. */
   public String getTime() {
     Date messageDate = Date.from(creation);
     SimpleDateFormat formatter = new SimpleDateFormat("MMMM dd, hh:mm a");
