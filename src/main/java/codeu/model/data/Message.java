@@ -16,6 +16,8 @@ package codeu.model.data;
 
 import java.time.Instant;
 import java.util.UUID;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 
 /** Class representing a message. Messages are sent by a User in a Conversation. */
 public class Message {
@@ -66,5 +68,11 @@ public class Message {
   /** Returns the creation time of this Message. */
   public Instant getCreationTime() {
     return creation;
+  }
+
+  public String getTime() {
+    Date messageDate = Date.from(creation);
+    SimpleDateFormat formatter = new SimpleDateFormat("MMMM dd, hh:mm a");
+    return formatter.format(messageDate);
   }
 }

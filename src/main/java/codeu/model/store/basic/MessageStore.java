@@ -16,6 +16,7 @@ package codeu.model.store.basic;
 
 import codeu.model.data.Message;
 import codeu.model.store.persistence.PersistentStorageAgent;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -111,4 +112,13 @@ public class MessageStore {
   public int getMessagesCount() {
     return messages != null ? messages.size() : 0;
   }
+
+  public UUID getMostRecentAuthor() {
+    return messages != null ? messages.get(messages.size() - 1).getAuthorId() : null;
+  }
+
+  public String getMostRecentTime() {
+    return messages != null ? messages.get(messages.size() - 1).getTime() : "";
+  }
+
 }

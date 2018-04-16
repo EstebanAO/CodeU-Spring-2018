@@ -126,4 +126,9 @@ public class UserStore {
   public int getUsersCount() {
     return users != null ? users.size() : 0;
   }
+
+  public String getNewestUser() {
+    return users != null ? users.get(users.size() - 1).getName() : "";
+  }
+
 }

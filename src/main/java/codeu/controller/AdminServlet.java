@@ -9,7 +9,9 @@ import codeu.model.store.basic.ConversationStore;
 import codeu.model.store.basic.MessageStore;
 import codeu.model.store.basic.UserStore;
 import java.io.IOException;
+import java.time.Instant;
 import java.util.List;
+import java.util.UUID;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -52,9 +54,16 @@ public class AdminServlet extends HttpServlet {
     int conversationsCount = conversationStore.getConversationsCount();
     int usersCount = userStore.getUsersCount();
     int messagesCount = messageStore.getMessagesCount();
+    String newestUser = userStore.getNewestUser();
+    UUID mostRecentAuthor = messageStore.getMostRecentAuthor();
+    String mostRecentUser = mostRecentAuthor != null ? userStore.getUser(mostRecentAuthor).getName() : "";
+    String mostRecentTime = messageStore.getMostRecentTime();
     request.setAttribute("conversationsCount", conversationsCount);
     request.setAttribute("usersCount", usersCount);
     request.setAttribute("messagesCount", messagesCount);
+    request.setAttribute("newestUser", newestUser);
+    request.setAttribute("mostRecentUser", mostRecentUser);
+    request.setAttribute("mostRecentTime", mostRecentTime);
     request.getRequestDispatcher("/WEB-INF/view/admin.jsp").forward(request, response);
   }
 }
