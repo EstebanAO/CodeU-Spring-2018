@@ -40,12 +40,6 @@ public class AdminServlet extends HttpServlet {
    * This function fires when a user requests the /admin URL. It simply forwards the request to
    * admin.jsp.
    */
-  /**@Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws IOException, ServletException {
-
-    request.getRequestDispatcher("/WEB-INF/view/admin.jsp").forward(request, response);
-  }*/
 
  @Override 
  public void doGet(HttpServletRequest request, HttpServletResponse response) 

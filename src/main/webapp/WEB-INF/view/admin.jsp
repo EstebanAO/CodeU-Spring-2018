@@ -34,10 +34,7 @@
     <% if (request.getAttribute("error") != null) { %>
       <h2 style="color:red"><%= request.getAttribute("error") %></h2>
     <% } %>
-
-    <%--<% if (request.getSession().getAttribute("users") !=null { %>
-        <h1>New Use})
-        --%>
+    
    <hr/>
     <% 
     List<User> users = (List<User>) request.getAttribute("users");
