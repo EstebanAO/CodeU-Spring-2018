@@ -102,16 +102,16 @@ public class MessageStore {
     return messagesInConversation;
   }
 
+@Nullable
   public List<Message> getMessagesByUser(UUID userId) {
 
     List<Message> messagesByUser = new ArrayList<>();
-
     for (Message message : messages) {
       if (message.getAuthorId().equals(userId)) {
         messagesByUser.add(message);
       }
     }
-    
+
     return messagesByUser;
   }
 

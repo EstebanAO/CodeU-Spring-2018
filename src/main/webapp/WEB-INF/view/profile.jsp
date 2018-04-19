@@ -17,9 +17,8 @@
 <%@ page import="codeu.model.data.User" %>
 <%@ page import="codeu.model.data.Message" %>
 
-<%
-User user = (User) request.getAttribute("user");
-List<Message> messages = user.getMessages();
+<% User user = (User) request.getAttribute("user");
+   List<Message> messages = user.getMessages();
 %>
 
 

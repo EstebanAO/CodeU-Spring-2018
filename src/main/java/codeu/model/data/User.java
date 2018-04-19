@@ -28,8 +28,8 @@ public class User {
   private final String password;
   private final Instant creation;
   private String aboutMe;
-  private MessageStore messageStore;
-  private ConversationStore conversationStore;
+  private final MessageStore messageStore;
+  private final ConversationStore conversationStore;
 
   /**
    * Constructs a new User.
