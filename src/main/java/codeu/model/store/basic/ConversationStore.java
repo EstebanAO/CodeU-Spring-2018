@@ -114,7 +114,7 @@ public class ConversationStore {
     return null;
   }
 
-@Nullable
+  @Nullable
   public String getConversationTitleWithId(UUID conversationId) {
     for (Conversation conversation : conversations) {
       if (conversation.getId().equals(conversationId)) {

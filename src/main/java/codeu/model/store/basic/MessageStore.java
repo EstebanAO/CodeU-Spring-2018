@@ -102,7 +102,7 @@ public class MessageStore {
     return messagesInConversation;
   }
 
-@Nullable
+  @Nullable
   public List<Message> getMessagesByUser(UUID userId) {
 
     List<Message> messagesByUser = new ArrayList<>();
