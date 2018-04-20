@@ -115,12 +115,12 @@ public class MessageStore {
 
   /** Returns the most recent user who sent a message if they exist. */
   public UUID getMostRecentAuthor() {
-    return messages != null ? messages.get(messages.size() - 1).getAuthorId() : null;
+    return messages != null && messages.size() > 0 ? messages.get(messages.size() - 1).getAuthorId() : null;
   }
 
   /** Returns the time of the most recent message if it exists. */
   public String getMostRecentTime() {
-    return messages != null ? messages.get(messages.size() - 1).getTime() : "";
+    return messages != null && messages.size() > 0 ? messages.get(messages.size() - 1).getTime() : "";
   }
 
 }

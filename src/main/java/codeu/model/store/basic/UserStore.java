@@ -133,7 +133,7 @@ public class UserStore {
 
   /** Returns the newest registered user if they exist. */
   public String getNewestUser() {
-    return users != null ? users.get(users.size() - 1).getName() : "";
+    return users != null && users.size() > 0 ? users.get(users.size() - 1).getName() : "";
   }
 
 }
