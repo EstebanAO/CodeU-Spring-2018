@@ -13,7 +13,6 @@
 // limitations under the License.
 
 package codeu.model.store.basic;
-
 import codeu.model.data.User;
 import codeu.model.store.persistence.PersistentStorageAgent;
 import java.util.ArrayList;
@@ -110,6 +109,11 @@ public class UserStore {
     persistentStorageAgent.writeThrough(user);
   }
 
+  /** Updates a user to the current set of users known to the application. */
+  public void updateUser(User user) {
+    persistentStorageAgent.writeThrough(user);
+  }
+
   /** Return true if the given username is known to the application. */
   public boolean isUserRegistered(String username) {
     for (User user : users) {
@@ -126,5 +130,10 @@ public class UserStore {
    */
   public void setUsers(List<User> users) {
     this.users = users;
+  }
+
+  /** Returns the number of registered users. */
+  public int getUsersCount() {
+    return users != null ? users.size() : 0;
   }
 }
