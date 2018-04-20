@@ -16,6 +16,10 @@ package codeu.model.data;
 
 import java.time.Instant;
 import java.util.UUID;
+import java.util.ArrayList;
+import java.util.List;
+import codeu.model.store.basic.MessageStore;
+import codeu.model.store.basic.ConversationStore;
 
 /** Class representing a registered user. */
 public class User {
@@ -24,6 +28,8 @@ public class User {
   private final String password;
   private final Instant creation;
   private String aboutMe;
+  private final MessageStore messageStore;
+  private final ConversationStore conversationStore;
 
   /**
    * Constructs a new User.
@@ -40,6 +46,8 @@ public class User {
     this.creation = creation;
     this.password = password;
     this.aboutMe = aboutMe;
+    this.messageStore = MessageStore.getInstance();
+    this.conversationStore = ConversationStore.getInstance();
   }
 
   /** Returns the ID of this User. */
@@ -68,4 +76,14 @@ public class User {
   public void setAboutMe(String aboutMe) {
     this.aboutMe = aboutMe;
   }
+
+  public List<Message> getMessages() {
+      List<Message> messagesByUser = messageStore.getMessagesByUser(id);
+      return messagesByUser;
+  }
+
+  public String getConversationTitle(UUID conversationId){
+      return conversationStore.getConversationTitleWithId(conversationId);
+  }
+
 }

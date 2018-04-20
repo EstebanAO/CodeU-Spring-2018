@@ -15,8 +15,11 @@
 --%>
 <%@ page import="java.util.List" %>
 <%@ page import="codeu.model.data.User" %>
+<%@ page import="codeu.model.data.Message" %>
 
-<% User user = (User) request.getAttribute("user"); %>
+<% User user = (User) request.getAttribute("user");
+   List<Message> messages = user.getMessages();
+%>
 
 
 <!DOCTYPE html>
@@ -58,6 +61,17 @@
          <button type="submit">Submit</button>
      </form>
     <%}%>
+    <h4>Sent Messages</h4>
+    <br/>
+    <% if (request.getSession().getAttribute("user") != null) {
+          for (Message message : messages) {%>
+            <%=user.getName()%>
+            <%=user.getConversationTitle(message.getConversationId())%>
+            <%=message.getContent()%>
+            <br/>
+          <%}
+    }%>
+
 </div>
 </body>
 </html>
