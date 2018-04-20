@@ -68,6 +68,8 @@ public class UserStore {
   public void loadTestData() {
     users.addAll(DefaultDataStore.getInstance().getAllUsers());
   }
+
+  /** Return a list of all users*/
   public List<User> getUsers() {
     return users;
   }
