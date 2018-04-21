@@ -45,6 +45,13 @@
       <li><strong>Messages:</strong>
         <%= request.getAttribute("messagesCount") %>
       </li>
+      <li><strong>Newest user:</strong>
+        <%= request.getAttribute("newestUser") %>
+      </li>
+      <li><strong>Most recent message:</strong>
+        <%= request.getAttribute("mostRecentUser") %>, 
+        <%= request.getAttribute("mostRecentTime") %>
+      </li>
     </ul>
   </div>
 
