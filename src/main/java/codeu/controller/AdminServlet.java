@@ -32,13 +32,11 @@ public class AdminServlet extends HttpServlet {
   * for use by the test framework or the servlet's init() function.
   */
   public void setUserStore(UserStore userStore) {
-    this.userStore = userStore;
-    
-  private UserStore userStore;
-
-  private ConversationStore conversationStore;
-
-  private MessageStore messageStore;
+	  this.userStore = userStore;
+	  private UserStore userStore;
+	  private ConversationStore conversationStore;
+	  private MessageStore messageStore;
+  }
 
   /**
   * Set up state for handling administration-related requests. This method is only called when
@@ -49,10 +47,6 @@ public class AdminServlet extends HttpServlet {
     setUserStore(UserStore.getInstance());
     setConversationStore(ConversationStore.getInstance());
     setMessageStore(MessageStore.getInstance());
-  }
-
-  void setUserStore(UserStore userStore) {
-    this.userStore = userStore;
   }
 
   void setConversationStore(ConversationStore conversationStore) {
