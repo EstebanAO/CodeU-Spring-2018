@@ -26,6 +26,8 @@ import java.time.Instant;
   */
 public class AdminServlet extends HttpServlet {
     private UserStore userStore;
+    private ConversationStore conversationStore;
+    private MessageStore messageStore;
   
   /**
   * Sets the UserStore used by this servlet. This function provides a common setup method
@@ -33,9 +35,6 @@ public class AdminServlet extends HttpServlet {
   */
 public void setUserStore(UserStore userStore) {
     this.userStore = userStore;
-    private UserStore userStore;
-    private ConversationStore conversationStore;
-    private MessageStore messageStore;
   }
 
   /**
