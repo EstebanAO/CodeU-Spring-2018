@@ -56,10 +56,8 @@ public class AdminServlet extends HttpServlet {
   void setMessageStore(MessageStore messageStore) {
     this.messageStore = messageStore;
   }
-    /**
-   * This function fires when a user requests the /admin URL. It simply forwards the request to
-   * admin.jsp.
-   */
+@override 
+
   public void doGet(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
     int conversationsCount = conversationStore.getConversationsCount();
