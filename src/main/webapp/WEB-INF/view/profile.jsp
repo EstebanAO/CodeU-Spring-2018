@@ -66,7 +66,7 @@
     <% if (request.getSession().getAttribute("user") != null) {
           for (Message message : messages) {%>
             <%=user.getName()%>
-            <%=user.getConversationTitle(message.getConversationId())%>
+            <strong><a href="/chat/<%=user.getConversationTitle(message.getConversationId())%>"><%=user.getConversationTitle(message.getConversationId())%></a></strong>
             <%=message.getContent()%>
             <br/>
           <%}
