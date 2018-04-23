@@ -74,12 +74,9 @@ UserStore userStore = UserStore.getInstance();
       <ul>
     <%
       for (Message message : messages) {
-        String author = UserStore.getInstance()
-          .getUser(message.getAuthorId()).getName();
+        String author = userStore.getUser(message.getAuthorId()).getName();
     %>
-          <%User userMessage = userStore.getUser(message.getAuthorId());%>
-
-      <li><strong><a href="/profile/<%= userMessage.getName()%>"> <%= userMessage.getName() %> </a>:</strong> <%= message.getContent() %></li>
+      <li><strong><a href="/profile/<%= author %>"><%= author %></a></strong> <span class="time"><%= message.getTime() %></span>: <%= message.getContent() %></li>
     <%
       }
     %>

@@ -14,6 +14,7 @@
   limitations under the License.
 --%>
 <%@ page import="java.util.List" %>
+<%@ page import="java.util.Calendar" %>
 <%@ page import="codeu.model.data.Conversation" %>
 
 <!DOCTYPE html>
@@ -58,6 +59,7 @@
     <% } %>
 
     <h1>Conversations</h1>
+    <% System.out.println(Calendar.getInstance().getTime()); %>
 
     <%
     List<Conversation> conversations =
