@@ -25,17 +25,17 @@ import java.time.Instant;
   * Servlet class responsible for administration.
   */
 public class AdminServlet extends HttpServlet {
-	private UserStore userStore;
+    private UserStore userStore;
   
   /**
   * Sets the UserStore used by this servlet. This function provides a common setup method
   * for use by the test framework or the servlet's init() function.
   */
-  public void setUserStore(UserStore userStore) {
-	  this.userStore = userStore;
-	  private UserStore userStore;
-	  private ConversationStore conversationStore;
-	  private MessageStore messageStore;
+public void setUserStore(UserStore userStore) {
+    this.userStore = userStore;
+    private UserStore userStore;
+    private ConversationStore conversationStore;
+    private MessageStore messageStore;
   }
 
   /**
@@ -70,6 +70,7 @@ public class AdminServlet extends HttpServlet {
     request.setAttribute("users", users);
     request.getRequestDispatcher("/WEB-INF/view/admin.jsp").forward(request, response);
   }
+}
 
 
 
