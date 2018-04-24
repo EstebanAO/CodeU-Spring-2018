@@ -1,5 +1,6 @@
 
 <%@ page import="java.util.List" %>
+<%@ page import="codeu.model.data.User" %>
 <%@ page import="codeu.model.data.Conversation" %>
 
 <!DOCTYPE html>
@@ -30,8 +31,33 @@
 
   <div id= "container"> 
     <h1>Administrator</h1>
-
-    <hr/>
+    
+    <% if (request.getAttribute("error") != null) { %>
+      <h2 style="color:red"><%= request.getAttribute("error") %></h2>
+    <% } %>
+    <% 
+    List<User> users = (List<User>) request.getAttribute("users");
+    if(users == null){
+    %>
+      <p>No Users</p>
+    <%
+    }
+    else{
+    %>
+      <ul class="mdl-list">
+    <%
+      for(User user : users){
+      %>
+        <li><a href="/admin/<%= user.getName() %>">
+          <%= user.getName() %></a></li>
+      <%
+      }
+      %>
+        </ul>
+      <%
+      }
+      %>
+      <hr/>
 
     <h2>Site Statistics</h2>
     <p>Here are some site stats:</p>
