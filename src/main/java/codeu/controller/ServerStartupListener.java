@@ -11,6 +11,8 @@ import codeu.model.store.persistence.PersistentStorageAgent;
 import java.util.List;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import java.util.HashMap;
+import java.util.UUID;
 
 /**
  * Listener class that fires when the server first starts up, before any servlet classes are
@@ -22,7 +24,7 @@ public class ServerStartupListener implements ServletContextListener {
   @Override
   public void contextInitialized(ServletContextEvent sce) {
     try {
-      List<User> users = PersistentStorageAgent.getInstance().loadUsers();
+      HashMap<UUID, User> users = PersistentStorageAgent.getInstance().loadUsers();
       UserStore.getInstance().setUsers(users);
 
       List<Conversation> conversations = PersistentStorageAgent.getInstance().loadConversations();

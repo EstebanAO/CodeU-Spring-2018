@@ -27,6 +27,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.HashMap;
 
 /**
  * This class handles all interactions with Google App Engine's Datastore service. On startup it
@@ -52,9 +53,9 @@ public class PersistentDataStore {
    * @throws PersistentDataStoreException if an error was detected during the load from the
    *     Datastore service
    */
-  public List<User> loadUsers() throws PersistentDataStoreException {
+  public HashMap<UUID, User> loadUsers() throws PersistentDataStoreException {
 
-    List<User> users = new ArrayList<>();
+    HashMap<UUID, User> users = new HashMap<UUID, User>();
 
     // Retrieve all users from the datastore.
     Query query = new Query("chat-users");
@@ -68,7 +69,7 @@ public class PersistentDataStore {
         Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
         String aboutMe = (String) entity.getProperty("aboutMe");
         User user = new User(uuid, userName, creationTime, password, aboutMe);
-        users.add(user);
+        users.put(uuid, user);
       } catch (Exception e) {
         // In a production environment, errors should be very rare. Errors which may
         // occur include network errors, Datastore service errors, authorization errors,
