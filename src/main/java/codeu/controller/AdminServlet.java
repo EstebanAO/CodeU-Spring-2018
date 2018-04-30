@@ -30,7 +30,7 @@ public class AdminServlet extends HttpServlet {
     private UserStore userStore;
     private ConversationStore conversationStore;
     private MessageStore messageStore;
-  
+
   /**
   * Sets the UserStore used by this servlet. This function provides a common setup method
   * for use by the test framework or the servlet's init() function.
@@ -57,7 +57,7 @@ public void setUserStore(UserStore userStore) {
   void setMessageStore(MessageStore messageStore) {
     this.messageStore = messageStore;
   }
-@Override 
+@Override
 
   public void doGet(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
@@ -65,7 +65,6 @@ public void setUserStore(UserStore userStore) {
     int usersCount = userStore.getUsersCount();
     int messagesCount = messageStore.getMessagesCount();
     List<User> users = userStore.getUsers();
-    request.setAttribute("conversationsCount", conversationsCount);
     request.setAttribute("users", users);
     String newestUser = userStore.getNewestUser();
     UUID mostRecentAuthor = messageStore.getMostRecentAuthor();
@@ -80,6 +79,3 @@ public void setUserStore(UserStore userStore) {
     request.getRequestDispatcher("/WEB-INF/view/admin.jsp").forward(request, response);
   }
 }
-
-
-
