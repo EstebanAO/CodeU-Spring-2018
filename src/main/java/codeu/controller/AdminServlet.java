@@ -57,8 +57,8 @@ public void setUserStore(UserStore userStore) {
   void setMessageStore(MessageStore messageStore) {
     this.messageStore = messageStore;
   }
-@Override
 
+  @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
     int conversationsCount = conversationStore.getConversationsCount();
