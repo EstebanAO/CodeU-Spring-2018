@@ -59,7 +59,6 @@ public class AdminServletTest {
 
   @Test
   public void testDoGet() throws IOException, ServletException {
-
     List<User> fakeUsersList = new ArrayList<>();
     fakeUsersList.add(
         new User(UUID.randomUUID(), "test_username", Instant.now(), "test_password", "test_aboutme"));
@@ -68,9 +67,11 @@ public class AdminServletTest {
     adminServlet.doGet(mockRequest, mockResponse);
 
     Mockito.verify(mockRequest).setAttribute("users", fakeUsersList);
+    Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
+  }
 
-    Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);  
-
+  @Test
+  public void testDoGetWithFakeData() throws IOException, ServletException {
     int fakeConversationsCount = 10;
     int fakeUsersCount = 4;
     int fakeMessagesCount = 132;
