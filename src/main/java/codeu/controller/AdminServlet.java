@@ -50,6 +50,7 @@ public void setUserStore(UserStore userStore) {
     setMessageStore(MessageStore.getInstance());
   }
 
+
   void setConversationStore(ConversationStore conversationStore) {
     this.conversationStore = conversationStore;
   }
