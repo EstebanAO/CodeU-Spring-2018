@@ -50,7 +50,7 @@ public class PersistentDataStore {
   }
 
   /**
-   * Loads all User objects from the Datastore service and returns them in a List.
+   * Loads all User objects from the Datastore service and returns them in a  Map with an id key.
    *
    * @throws PersistentDataStoreException if an error was detected during the load from the
    *     Datastore service
@@ -84,7 +84,7 @@ public class PersistentDataStore {
   }
 
   /**
-   * Loads all User objects from the Datastore service and returns them in a List.
+   * Loads all User objects from the Datastore service and returns them in a Map with a username key.
    *
    * @throws PersistentDataStoreException if an error was detected during the load from the
    *     Datastore service

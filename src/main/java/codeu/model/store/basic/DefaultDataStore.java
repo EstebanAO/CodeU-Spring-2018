@@ -19,8 +19,12 @@ import codeu.model.data.Message;
 import codeu.model.data.User;
 import codeu.model.store.persistence.PersistentStorageAgent;
 import java.time.Instant;
-import java.util.*;
-
+import java.util.Map;
+import java.util.UUID;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Collections;
 import org.mindrot.jbcrypt.BCrypt;
 
 
@@ -28,7 +32,7 @@ import org.mindrot.jbcrypt.BCrypt;
  * This class makes it easy to add dummy data to your chat app instance. To use fake data, set
  * USE_DEFAULT_DATA to true, then adjust the COUNT variables to generate the corresponding amount of
  * users, conversations, and messages. Note that the data must be consistent, i.e. if a Message has
- * an author, that author must be a member of the Users list.
+ * an author, that author must be a member of the Users map.
  */
 public class DefaultDataStore {
 

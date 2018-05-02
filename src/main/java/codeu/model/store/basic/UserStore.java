@@ -69,12 +69,13 @@ public class UserStore {
     usersByUsername = new HashMap<String, User>();
   }
 
-  /** Load a set of randomly-generated Message objects. */
+  /** Load a set of randomly-generated User objects. */
   public void loadTestDataById() {
+
     usersById.putAll(DefaultDataStore.getInstance().getAllUsersById());
   }
 
-  /** Load a set of randomly-generated Message objects. */
+  /** Load a set of randomly-generated User objects. */
   public void loadTestDataByUsername() {
     usersByUsername.putAll(DefaultDataStore.getInstance().getAllUsersByUsername());
   }
@@ -119,7 +120,7 @@ public class UserStore {
   }
 
   /**
-   * Sets the List of Users stored by this UserStore. This should only be called once, when the data
+   * Sets the Map of Users by id stored by this UserStore. This should only be called once, when the data
    * is loaded from Datastore.
    */
   public void setUsersById(Map<UUID, User> users) {
@@ -127,7 +128,7 @@ public class UserStore {
   }
 
   /**
-   * Sets the List of Users stored by this UserStore. This should only be called once, when the data
+   * Sets the MAp of Users by username stored by this UserStore. This should only be called once, when the data
    * is loaded from Datastore.
    */
   public void setUsersByUsername(Map<String, User> users) {

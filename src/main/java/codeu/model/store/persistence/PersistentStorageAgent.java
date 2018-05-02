@@ -64,7 +64,7 @@ public class PersistentStorageAgent {
   }
 
   /**
-   * Retrieve all User objects from the Datastore service. The returned list may be empty.
+   * Retrieve all User objects from the Datastore service. The returned Map may be empty.
    *
    * @throws PersistentDataStoreException if an error was detected during the load from the
    *     Datastore service
@@ -74,7 +74,7 @@ public class PersistentStorageAgent {
   }
 
   /**
-   * Retrieve all User objects from the Datastore service. The returned list may be empty.
+   * Retrieve all User objects from the Datastore service. The returned MAp may be empty.
    *
    * @throws PersistentDataStoreException if an error was detected during the load from the
    *     Datastore service
