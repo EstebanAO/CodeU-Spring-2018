@@ -58,17 +58,25 @@ public class UserStore {
   private PersistentStorageAgent persistentStorageAgent;
 
   /** The in-memory list of Users. */
-  private HashMap<UUID, User> users;
+  private Map<UUID, User> usersById;
+  private Map<String, User> usersByUsername;
+
 
   /** This class is a singleton, so its constructor is private. Call getInstance() instead. */
   private UserStore(PersistentStorageAgent persistentStorageAgent) {
     this.persistentStorageAgent = persistentStorageAgent;
-    users = new HashMap<UUID, User>();
+    usersById = new HashMap<UUID, User>();
+    usersByUsername = new HashMap<String, User>();
   }
 
   /** Load a set of randomly-generated Message objects. */
-  public void loadTestData() {
-    users.putAll(DefaultDataStore.getInstance().getAllUsers());
+  public void loadTestDataById() {
+    usersById.putAll(DefaultDataStore.getInstance().getAllUsersById());
+  }
+
+  /** Load a set of randomly-generated Message objects. */
+  public void loadTestDataByUsername() {
+    usersByUsername.putAll(DefaultDataStore.getInstance().getAllUsersByUsername());
   }
 
   /**
@@ -77,16 +85,7 @@ public class UserStore {
    * @return null if username does not match any existing User.
    */
   public User getUser(String username) {
-    Iterator it = users.entrySet().iterator();
-    while (it.hasNext()) {
-      Map.Entry user = (Map.Entry)it.next();
-      if (((User)user.getValue()).getName().equals(username))
-      {
-        return (User)user.getValue();
-      }
-        it.remove();
-    }
-    return null;
+    return usersByUsername.get(username);
   }
 
   /**
@@ -95,12 +94,13 @@ public class UserStore {
    * @return null if the UUID does not match any existing User.
    */
   public User getUser(UUID id) {
-    return users.get(id);
+    return usersById.get(id);
   }
 
   /** Add a new user to the current set of users known to the application. */
   public void addUser(User user) {
-    users.put(user.getId(), user);
+    usersById.put(user.getId(), user);
+    usersByUsername.put(user.getName(), user);
     persistentStorageAgent.writeThrough(user);
   }
 
@@ -111,15 +111,10 @@ public class UserStore {
 
   /** Return true if the given username is known to the application. */
   public boolean isUserRegistered(String username) {
-    Iterator it = users.entrySet().iterator();
-    while (it.hasNext()) {
-      Map.Entry user = (Map.Entry)it.next();
-      if (((User)user.getValue()).getName().equals(username))
+      if (usersByUsername.containsKey(username) )
       {
         return true;
       }
-      it.remove(); // avoids a ConcurrentModificationException
-    }
     return false;
   }
 
@@ -127,7 +122,15 @@ public class UserStore {
    * Sets the List of Users stored by this UserStore. This should only be called once, when the data
    * is loaded from Datastore.
    */
-  public void setUsers(HashMap<UUID, User> users) {
-    this.users = users;
+  public void setUsersById(Map<UUID, User> users) {
+    this.usersById = users;
+  }
+
+  /**
+   * Sets the List of Users stored by this UserStore. This should only be called once, when the data
+   * is loaded from Datastore.
+   */
+  public void setUsersByUsername(Map<String, User> users) {
+    this.usersByUsername = users;
   }
 }

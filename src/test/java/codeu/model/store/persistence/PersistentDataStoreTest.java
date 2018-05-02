@@ -7,6 +7,7 @@ import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestC
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import java.time.Instant;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import org.junit.After;
 import org.junit.Assert;
@@ -57,7 +58,7 @@ public class PersistentDataStoreTest {
     persistentDataStore.writeThrough(inputUserTwo);
 
     // load
-    List<User> resultUsers = persistentDataStore.loadUsers();
+    Map<UUID, User> resultUsers = persistentDataStore.loadUsersById();
 
     // confirm that what we saved matches what we loaded
     User resultUserOne = resultUsers.get(0);

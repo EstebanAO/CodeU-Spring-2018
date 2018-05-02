@@ -6,12 +6,14 @@ import codeu.model.data.User;
 import codeu.model.store.basic.ConversationStore;
 import codeu.model.store.basic.MessageStore;
 import codeu.model.store.basic.UserStore;
+import codeu.model.store.persistence.PersistentDataStore;
 import codeu.model.store.persistence.PersistentDataStoreException;
 import codeu.model.store.persistence.PersistentStorageAgent;
 import java.util.List;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -24,8 +26,10 @@ public class ServerStartupListener implements ServletContextListener {
   @Override
   public void contextInitialized(ServletContextEvent sce) {
     try {
-      HashMap<UUID, User> users = PersistentStorageAgent.getInstance().loadUsers();
-      UserStore.getInstance().setUsers(users);
+      Map<UUID, User> usersById = PersistentStorageAgent.getInstance().loadUsersById();
+      Map<String, User> usersByUserName = PersistentStorageAgent.getInstance().loadUsersByUsername();
+      UserStore.getInstance().setUsersById(usersById);
+      UserStore.getInstance().setUsersByUsername(usersByUserName);
 
       List<Conversation> conversations = PersistentStorageAgent.getInstance().loadConversations();
       ConversationStore.getInstance().setConversations(conversations);

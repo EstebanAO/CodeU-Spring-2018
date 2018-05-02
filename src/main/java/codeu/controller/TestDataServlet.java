@@ -88,7 +88,8 @@ public class TestDataServlet extends HttpServlet {
     String confirmButton = request.getParameter("confirm");
 
     if (confirmButton != null) {
-      userStore.loadTestData();
+      userStore.loadTestDataById();
+      userStore.loadTestDataByUsername();
       conversationStore.loadTestData();
       messageStore.loadTestData();
     }

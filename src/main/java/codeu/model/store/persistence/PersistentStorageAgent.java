@@ -21,6 +21,7 @@ import codeu.model.store.persistence.PersistentDataStore;
 import java.util.List;
 import java.util.HashMap;
 import java.util.UUID;
+import java.util.Map;
 
 
 /**
@@ -68,8 +69,18 @@ public class PersistentStorageAgent {
    * @throws PersistentDataStoreException if an error was detected during the load from the
    *     Datastore service
    */
-  public HashMap<UUID, User> loadUsers() throws PersistentDataStoreException {
-    return persistentDataStore.loadUsers();
+  public Map<UUID, User> loadUsersById() throws PersistentDataStoreException {
+    return persistentDataStore.loadUsersById();
+  }
+
+  /**
+   * Retrieve all User objects from the Datastore service. The returned list may be empty.
+   *
+   * @throws PersistentDataStoreException if an error was detected during the load from the
+   *     Datastore service
+   */
+  public Map<String, User> loadUsersByUsername() throws PersistentDataStoreException {
+    return persistentDataStore.loadUsersByUsername();
   }
 
   /**

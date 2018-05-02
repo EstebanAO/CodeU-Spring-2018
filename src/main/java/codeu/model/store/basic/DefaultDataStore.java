@@ -59,13 +59,15 @@ public class DefaultDataStore {
     return instance;
   }
 
-  private HashMap<UUID, User> users;
+  private Map<UUID, User> usersById;
+  private Map<String, User> usersByUsername;
   private List<Conversation> conversations;
   private List<Message> messages;
 
   /** This class is a singleton, so its constructor is private. Call getInstance() instead. */
   private DefaultDataStore() {
-    users = new HashMap<UUID, User>();
+    usersById = new HashMap<UUID, User>();
+    usersByUsername = new HashMap<String, User>();
     conversations = new ArrayList<>();
     messages = new ArrayList<>();
 
@@ -80,8 +82,12 @@ public class DefaultDataStore {
     return true;
   }
 
-  public HashMap<UUID, User> getAllUsers() {
-    return users;
+  public Map<UUID, User> getAllUsersById() {
+    return usersById;
+  }
+
+  public Map<String, User> getAllUsersByUsername() {
+    return usersByUsername;
   }
 
   public List<Conversation> getAllConversations() {
@@ -108,13 +114,15 @@ public class DefaultDataStore {
         BCrypt.hashpw("password", BCrypt.gensalt()),
               "Write about you...");
       PersistentStorageAgent.getInstance().writeThrough(user);
-      users.put(user.getId(), user);
+      usersById.put(user.getId(), user);
+      usersByUsername.put(user.getName(), user);
+
     }
   }
 
   private void addRandomConversations() {
     for (int i = 1; i <= DEFAULT_CONVERSATION_COUNT; i++) {
-      User user = getRandomUser(users);
+      User user = getRandomUser(usersById);
       String title = "Conversation_" + i;
       Conversation conversation =
           new Conversation(UUID.randomUUID(), user.getId(), title, Instant.now());
@@ -126,7 +134,7 @@ public class DefaultDataStore {
   private void addRandomMessages() {
     for (int i = 0; i < DEFAULT_MESSAGE_COUNT; i++) {
       Conversation conversation = getRandomElement(conversations);
-      User author = getRandomUser(users);
+      User author = getRandomUser(usersById);
       String content = getRandomMessageContent();
 
       Message message =
@@ -141,24 +149,14 @@ public class DefaultDataStore {
     return list.get((int) (Math.random() * list.size()));
   }
 
-  private User getRandomUser(HashMap<UUID, User> list) {
-      int position = (int) (Math.random() * list.size());
-      int iCount = 0;
-      Iterator it = users.entrySet().iterator();
-      while (it.hasNext()) {
-          Map.Entry user = (Map.Entry)it.next();
-          if (position == iCount)
-          {
-              return (User)user.getValue();
-          }
-          it.remove();
-          iCount++;
-      }
-      return null;
-      }
+  private User getRandomUser(Map<UUID, User> map) {
+    int position = (int) (Math.random() * map.size());
+    Map.Entry<UUID, User> userEntry = (Map.Entry<UUID, User>) usersById.entrySet().toArray()[position];
+    return userEntry.getValue();
+  }
 
 
-    private List<String> getRandomUsernames() {
+  private List<String> getRandomUsernames() {
     List<String> randomUsernames = new ArrayList<>();
     randomUsernames.add("Grace");
     randomUsernames.add("Ada");

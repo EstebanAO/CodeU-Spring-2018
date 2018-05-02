@@ -27,7 +27,9 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.Map;
 import java.util.HashMap;
+
 
 /**
  * This class handles all interactions with Google App Engine's Datastore service. On startup it
@@ -53,9 +55,9 @@ public class PersistentDataStore {
    * @throws PersistentDataStoreException if an error was detected during the load from the
    *     Datastore service
    */
-  public HashMap<UUID, User> loadUsers() throws PersistentDataStoreException {
+  public Map<UUID, User> loadUsersById() throws PersistentDataStoreException {
 
-    HashMap<UUID, User> users = new HashMap<UUID, User>();
+    Map<UUID, User> users = new HashMap<UUID, User>();
 
     // Retrieve all users from the datastore.
     Query query = new Query("chat-users");
@@ -70,6 +72,40 @@ public class PersistentDataStore {
         String aboutMe = (String) entity.getProperty("aboutMe");
         User user = new User(uuid, userName, creationTime, password, aboutMe);
         users.put(uuid, user);
+      } catch (Exception e) {
+        // In a production environment, errors should be very rare. Errors which may
+        // occur include network errors, Datastore service errors, authorization errors,
+        // database entity definition mismatches, or service mismatches.
+        throw new PersistentDataStoreException(e);
+      }
+    }
+
+    return users;
+  }
+
+  /**
+   * Loads all User objects from the Datastore service and returns them in a List.
+   *
+   * @throws PersistentDataStoreException if an error was detected during the load from the
+   *     Datastore service
+   */
+  public Map<String, User> loadUsersByUsername() throws PersistentDataStoreException {
+
+    Map<String, User> users = new HashMap<String, User>();
+
+    // Retrieve all users from the datastore.
+    Query query = new Query("chat-users");
+    PreparedQuery results = datastore.prepare(query);
+
+    for (Entity entity : results.asIterable()) {
+      try {
+        UUID uuid = UUID.fromString((String) entity.getProperty("uuid"));
+        String userName = (String) entity.getProperty("username");
+        String password = (String) entity.getProperty("password");
+        Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
+        String aboutMe = (String) entity.getProperty("aboutMe");
+        User user = new User(uuid, userName, creationTime, password, aboutMe);
+        users.put(userName, user);
       } catch (Exception e) {
         // In a production environment, errors should be very rare. Errors which may
         // occur include network errors, Datastore service errors, authorization errors,
