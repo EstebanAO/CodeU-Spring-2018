@@ -7,7 +7,6 @@ import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestC
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import java.time.Instant;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import org.junit.After;
 import org.junit.Assert;
@@ -25,7 +24,7 @@ public class PersistentDataStoreTest {
 
   private PersistentDataStore persistentDataStore;
   private final LocalServiceTestHelper appEngineTestHelper =
-      new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
+          new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
 
   @Before
   public void setup() {
@@ -58,7 +57,7 @@ public class PersistentDataStoreTest {
     persistentDataStore.writeThrough(inputUserTwo);
 
     // load
-    Map<UUID, User> resultUsers = persistentDataStore.loadUsersById();
+    List<User> resultUsers = persistentDataStore.loadUsers();
 
     // confirm that what we saved matches what we loaded
     User resultUserOne = resultUsers.get(0);
@@ -117,7 +116,7 @@ public class PersistentDataStoreTest {
     String contentOne = "test content one";
     Instant creationOne = Instant.ofEpochMilli(1000);
     Message inputMessageOne =
-        new Message(idOne, conversationOne, authorOne, contentOne, creationOne);
+            new Message(idOne, conversationOne, authorOne, contentOne, creationOne);
 
     UUID idTwo = UUID.randomUUID();
     UUID conversationTwo = UUID.randomUUID();
@@ -125,7 +124,7 @@ public class PersistentDataStoreTest {
     String contentTwo = "test content one";
     Instant creationTwo = Instant.ofEpochMilli(2000);
     Message inputMessageTwo =
-        new Message(idTwo, conversationTwo, authorTwo, contentTwo, creationTwo);
+            new Message(idTwo, conversationTwo, authorTwo, contentTwo, creationTwo);
 
     // save
     persistentDataStore.writeThrough(inputMessageOne);

@@ -70,14 +70,9 @@ public class UserStore {
   }
 
   /** Load a set of randomly-generated User objects. */
-  public void loadTestDataById() {
-
-    usersById.putAll(DefaultDataStore.getInstance().getAllUsersById());
-  }
-
-  /** Load a set of randomly-generated User objects. */
-  public void loadTestDataByUsername() {
+  public void loadTestData() {
     usersByUsername.putAll(DefaultDataStore.getInstance().getAllUsersByUsername());
+    usersById.putAll(DefaultDataStore.getInstance().getAllUsersById());
   }
 
   /**
@@ -100,9 +95,9 @@ public class UserStore {
 
   /** Add a new user to the current set of users known to the application. */
   public void addUser(User user) {
-    usersById.put(user.getId(), user);
-    usersByUsername.put(user.getName(), user);
-    persistentStorageAgent.writeThrough(user);
+    this.usersById.put(user.getId(), user);
+    this.usersByUsername.put(user.getName(), user);
+    this.persistentStorageAgent.writeThrough(user);
   }
 
   /** Updates a user to the current set of users known to the application. */
@@ -112,26 +107,17 @@ public class UserStore {
 
   /** Return true if the given username is known to the application. */
   public boolean isUserRegistered(String username) {
-      if (usersByUsername.containsKey(username) )
-      {
-        return true;
-      }
-    return false;
-  }
-
-  /**
-   * Sets the Map of Users by id stored by this UserStore. This should only be called once, when the data
-   * is loaded from Datastore.
-   */
-  public void setUsersById(Map<UUID, User> users) {
-    this.usersById = users;
+      return usersByUsername.containsKey(username);
   }
 
   /**
    * Sets the MAp of Users by username stored by this UserStore. This should only be called once, when the data
    * is loaded from Datastore.
    */
-  public void setUsersByUsername(Map<String, User> users) {
-    this.usersByUsername = users;
+  public void setUsers(List<User> users) {
+    for (User user : users) {
+      usersByUsername.put(user.getName(), user);
+      usersById.put(user.getId(), user);
+    }
   }
 }

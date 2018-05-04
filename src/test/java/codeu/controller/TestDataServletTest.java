@@ -74,8 +74,7 @@ public class TestDataServletTest {
 
     testDataServlet.doPost(mockRequest, mockResponse);
 
-    Mockito.verify(mockUserStore).loadTestDataById();
-    Mockito.verify(mockUserStore).loadTestDataByUsername();
+    Mockito.verify(mockUserStore).loadTestData();
     Mockito.verify(mockConversationStore).loadTestData();
     Mockito.verify(mockMessageStore).loadTestData();
     Mockito.verify(mockResponse).sendRedirect("/");
@@ -88,8 +87,7 @@ public class TestDataServletTest {
 
     testDataServlet.doPost(mockRequest, mockResponse);
 
-    Mockito.verify(mockUserStore, Mockito.never()).loadTestDataById();
-    Mockito.verify(mockUserStore, Mockito.never()).loadTestDataByUsername();
+    Mockito.verify(mockUserStore, Mockito.never()).loadTestData();
     Mockito.verify(mockConversationStore, Mockito.never()).loadTestData();
     Mockito.verify(mockMessageStore, Mockito.never()).loadTestData();
     Mockito.verify(mockResponse).sendRedirect("/");

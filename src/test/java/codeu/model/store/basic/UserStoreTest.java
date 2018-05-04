@@ -30,17 +30,13 @@ public class UserStoreTest {
     mockPersistentStorageAgent = Mockito.mock(PersistentStorageAgent.class);
     userStore = UserStore.getTestInstance(mockPersistentStorageAgent);
 
-    Map<UUID, User> usersById = new HashMap<UUID, User>();
-    Map<String, User> usersByUsername = new HashMap<String, User>();
-    usersById.put(USER_ONE.getId(), USER_ONE);
-    usersById.put(USER_TWO.getId(),USER_TWO);
-    usersById.put(USER_THREE.getId(),USER_THREE);
-    usersByUsername.put(USER_ONE.getName(), USER_ONE);
-    usersByUsername.put(USER_TWO.getName(),USER_TWO);
-    usersByUsername.put(USER_THREE.getName(),USER_THREE);
-    userStore.setUsersById(usersById);
-    userStore.setUsersByUsername(usersByUsername);
-
+    final List<User> users = new ArrayList< User>();
+    users.add(USER_ONE);
+    users.add(USER_TWO);
+    users.add(USER_THREE);
+    for (User user : users) {
+      userStore.addUser(user);
+    }
   }
 
   @Test

@@ -26,10 +26,11 @@ public class ServerStartupListener implements ServletContextListener {
   @Override
   public void contextInitialized(ServletContextEvent sce) {
     try {
-      Map<UUID, User> usersById = PersistentStorageAgent.getInstance().loadUsersById();
-      Map<String, User> usersByUserName = PersistentStorageAgent.getInstance().loadUsersByUsername();
-      UserStore.getInstance().setUsersById(usersById);
-      UserStore.getInstance().setUsersByUsername(usersByUserName);
+      List<User> users = PersistentStorageAgent.getInstance().loadUsers();
+
+      for (User user : users) {
+        UserStore.getInstance().addUser(user);
+      }
 
       List<Conversation> conversations = PersistentStorageAgent.getInstance().loadConversations();
       ConversationStore.getInstance().setConversations(conversations);
@@ -48,3 +49,8 @@ public class ServerStartupListener implements ServletContextListener {
   @Override
   public void contextDestroyed(ServletContextEvent sce) {}
 }
+
+
+//Volver a poner los Storages como listas
+//Solo hacer una función de loadUsers byy hacerlo en lista
+//Cambiar set users by por solo una función que poble ambos maps dentro de userstore
