@@ -23,6 +23,8 @@ import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+import java.util.Set;
+import java.util.HashSet;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -124,9 +126,9 @@ public class ConversationServlet extends HttpServlet {
     }
 
     String action = request.getParameter("action");
-    List<UUID> users = null;
+    Set<UUID> users = null;
     if (action.equals("private")) {
-      users = Arrays.asList(user.getId());
+      users = new HashSet<>(Arrays.asList(user.getId()));
     }
 
     Conversation conversation =

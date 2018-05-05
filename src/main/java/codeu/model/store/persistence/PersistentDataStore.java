@@ -27,6 +27,8 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.Set;
+import java.util.HashSet;
 
 /**
  * This class handles all interactions with Google App Engine's Datastore service. On startup it
@@ -100,10 +102,10 @@ public class PersistentDataStore {
         UUID ownerUuid = UUID.fromString((String) entity.getProperty("owner_uuid"));
         String title = (String) entity.getProperty("title");
         Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
-        String usersString = entity.getProperty("users") != null ? (String) entity.getProperty("users") : "null";
-        List<UUID> users = null;
-        if (!usersString.equals("null")) {
-          users = new ArrayList<>();
+        String usersString = entity.getProperty("users") != null ? (String) entity.getProperty("users") : null;
+        Set<UUID> users = null;
+        if (usersString != null && !usersString.equals("null")) {
+          users = new HashSet<>();
           String[] elements = usersString.substring(1, usersString.length() - 1).split(", ");
           for (String item : elements) {
             users.add(UUID.fromString(item));

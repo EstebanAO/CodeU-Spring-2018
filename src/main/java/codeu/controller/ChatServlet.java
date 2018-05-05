@@ -96,12 +96,12 @@ public class ChatServlet extends HttpServlet {
     }
 
     if (conversation.isPrivate()) {
-      if (request.getSession().getAttribute("user") == null) {
+      String userName = (String) request.getSession().getAttribute("user");
+      if (userName == null) {
         System.out.println("User did not have access to private conversation: " + conversationTitle);
         response.sendRedirect("/conversations");
         return;
       } else {
-        String userName = (String) request.getSession().getAttribute("user");
         User user = userStore.getUser(userName);
         UUID userId = user.getId();
         if (!conversation.hasUserId(userId)) {
