@@ -22,8 +22,11 @@ import codeu.model.store.basic.MessageStore;
 import codeu.model.store.basic.UserStore;
 import java.io.IOException;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
+import java.util.Set;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -115,7 +118,15 @@ public class ChatServlet extends HttpServlet {
     UUID conversationId = conversation.getId();
 
     List<Message> messages = messageStore.getMessagesInConversation(conversationId);
-    List<User> users = userStore.getUsers();
+    List<User> users = new ArrayList<>();
+    users.addAll(userStore.getUsers());
+    Set<UUID> existingUsersId = conversation.getUsers();
+    for (Iterator<User> iter = users.iterator(); iter.hasNext(); ) {
+      User user = iter.next();
+      if (existingUsersId.contains(user.getId())) {
+        iter.remove();
+      }
+    }
 
     request.setAttribute("conversation", conversation);
     request.setAttribute("messages", messages);
