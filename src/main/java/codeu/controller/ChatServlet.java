@@ -95,6 +95,23 @@ public class ChatServlet extends HttpServlet {
       return;
     }
 
+    if (conversation.isPrivate()) {
+      if (request.getSession().getAttribute("user") == null) {
+        System.out.println("User did not have access to private conversation: " + conversationTitle);
+        response.sendRedirect("/conversations");
+        return;
+      } else {
+        String userName = (String) request.getSession().getAttribute("user");
+        User user = userStore.getUser(userName);
+        UUID userId = user.getId();
+        if (!conversation.hasUserId(userId)) {
+          System.out.println("User did not have access to private conversation: " + conversationTitle);
+          response.sendRedirect("/conversations");
+          return;
+        }
+      }
+    }
+
     UUID conversationId = conversation.getId();
 
     List<Message> messages = messageStore.getMessagesInConversation(conversationId);
