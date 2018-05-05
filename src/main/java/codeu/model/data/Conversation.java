@@ -84,4 +84,10 @@ public class Conversation {
   public boolean isPrivate() {
     return users != null;
   }
+
+  public void addUserId(UUID userId) {
+    if (users != null) {
+      users.add(userId);
+    }
+  }
 }

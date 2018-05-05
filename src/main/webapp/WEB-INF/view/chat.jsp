@@ -71,7 +71,7 @@ UserStore userStore = UserStore.getInstance();
     <div style="display: flex; flex-direction: row; align-items: center;">
       <p style="margin-right: 10px;">Add users: </p>
       <form action="/chat/<%= conversation.getTitle() %>" method="POST">
-          <select name="People">
+          <select name="people">
             <%
             List<User> users = (List<User>) request.getAttribute("users");
             for (User user : users) {
@@ -79,7 +79,7 @@ UserStore userStore = UserStore.getInstance();
               <option><%= user.getName() %></option>
             <% } %>
           </select>
-          <input type="submit"/>
+          <input type="submit" name="action" value="adduser"/>
         </form>
     </div>
     <hr/>
@@ -103,7 +103,7 @@ UserStore userStore = UserStore.getInstance();
     <form action="/chat/<%= conversation.getTitle() %>" method="POST">
         <input type="text" name="message">
         <br/>
-        <button type="submit">Send</button>
+        <button type="submit" name="action" value="sendmessage">Send</button>
     </form>
     <% } else { %>
       <p><a href="/login">Login</a> to send a message.</p>
