@@ -96,4 +96,16 @@
     <url-pattern>/admin</url-pattern>
   </servlet-mapping>
 
+  <servlet>
+    <servlet-name>LogoffServlet</servlet-name>
+    <servlet-class>codeu.controller.LogoffServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>LogoffServlet</servlet-name>
+    <url-pattern>/logoff</url-pattern>
+  </servlet-mapping>
+
+
+
 </web-app>

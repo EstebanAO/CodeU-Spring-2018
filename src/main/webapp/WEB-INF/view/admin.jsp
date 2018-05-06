@@ -2,6 +2,10 @@
 <%@ page import="java.util.List" %>
 <%@ page import="codeu.model.data.User" %>
 <%@ page import="codeu.model.data.Conversation" %>
+<%@ page import="codeu.model.store.basic.UserStore" %>
+<% 
+UserStore userStore = UserStore.getInstance();
+%>
 
 <!DOCTYPE html>
 <html>
@@ -15,8 +19,7 @@
       </style>
 </head>
 <body>
-
-  <nav>
+    <nav>
       <a id="navTitle" href="/">CodeU Chat App</a>
       <a href="/conversations">Conversations</a>
       <% if (request.getSession().getAttribute("user") != null) { %>
@@ -27,7 +30,18 @@
       <% } %>
       <a href="/about.jsp">About</a>
       <a href="/admin">Administrator</a>
+      <% if (request.getSession().getAttribute("user") != null) { %>
+      <a href="/logoff.jsp">Logoff</a>
+      <% } %>
   </nav>
+  <div id="container">
+    <form action="/" method="POST">
+     <% request.getSession().removeAttribute("user"); %>
+      <button type="submit">Logoff</button>
+    </form>
+    <hr/>
+  </div>
+  <div id="container">
 
   <div id= "container"> 
     <h1>Administrator</h1>

@@ -61,8 +61,12 @@ UserStore userStore = UserStore.getInstance();
       <a href="/about.jsp">About</a>
       <a href="/admin">Administrator</a>
   </nav>
-
-
+   <div id="container">
+    <form action="/logoff" method="POST">
+      <button type="submit" >Logoff</button>
+    </form>
+  </div>
+  
   <div id="container">
 
     <h1><%= conversation.getTitle() %>

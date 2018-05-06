@@ -40,7 +40,11 @@
     <a href="/register">Register</a>
     <% } %>
     <a href="/about.jsp">About</a>
+    <% if (request.getSession().getAttribute("user") != null) { %>
+    <a href="/logoff.jsp">Logoff</a>
+    <% } %>
 </nav>
+
 
 <div id="container">
 
