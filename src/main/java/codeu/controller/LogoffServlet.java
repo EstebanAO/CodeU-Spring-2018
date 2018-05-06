@@ -13,7 +13,6 @@ import org.mindrot.jbcrypt.BCrypt;
 
 /** Servlet class responsible for the logoff page. */
 public class LogoffServlet extends HttpServlet {
-
 	public void init() throws ServletException {
 		super.init(); 
 	}
@@ -27,7 +26,8 @@ public class LogoffServlet extends HttpServlet {
    	  request.getRequestDispatcher("/logoff").forward(request, response);
   }
   /**
-   * This function fires when a user submits the logoff form.*/
+   * This function fires when a user submits the logoff form.
+   */
    
   @Override 
   public void doPost(HttpServletRequest request, HttpServletResponse response)

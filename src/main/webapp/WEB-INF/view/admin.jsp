@@ -33,7 +33,15 @@ UserStore userStore = UserStore.getInstance();
       <% if (request.getSession().getAttribute("user") != null) { %>
       <a href="/logoff.jsp">Logoff</a>
       <% } %>
+      <% if (request.getSession().getAttribute("user") != null) { %>
+      <% User user = (User) request.getSession().getAttribute("user");
+        String userName = user.getName();
+        %>
+      <a href="/profile/<%= userName %>"><%= userName %></a>
+      <% } else { %>
+      <% } %>   
   </nav>
+
   <div id="container">
     <form action="/" method="POST">
      <% request.getSession().removeAttribute("user"); %>
