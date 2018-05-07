@@ -18,6 +18,7 @@ import codeu.model.data.Conversation;
 import codeu.model.data.User;
 import codeu.model.store.basic.ConversationStore;
 import codeu.model.store.basic.UserStore;
+import com.google.common.collect.ImmutableSet;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.Arrays;
@@ -126,7 +127,7 @@ public class ConversationServlet extends HttpServlet {
     }
 
     String action = request.getParameter("action");
-    Set<UUID> users = null;
+    Set<UUID> users = ImmutableSet.of();
     if (action.equals("private")) {
       users = new HashSet<>(Arrays.asList(user.getId()));
     }

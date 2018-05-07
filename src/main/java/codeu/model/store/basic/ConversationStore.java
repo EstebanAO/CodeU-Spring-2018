@@ -19,6 +19,7 @@ import codeu.model.store.persistence.PersistentStorageAgent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 
 /**
@@ -90,35 +91,24 @@ public class ConversationStore {
 
   /** Access the current set of public conversations known to the application. */
   public List<Conversation> getAllPublicConversations() {
-    List<Conversation> publicConversations = new ArrayList<>();
-    for (Conversation conversation : conversations) {
-      if (!conversation.isPrivate()) {
-        publicConversations.add(conversation);
-      }
-    }
-    return publicConversations;
+    return conversations.stream()
+      .filter(conv -> !conv.isPrivate())
+      .collect(Collectors.toList());
   }
 
   /** Access the current set of private conversations known to the application. */
   public List<Conversation> getAllPrivateConversations() {
-    List<Conversation> privateConversations = new ArrayList<>();
-    for (Conversation conversation : conversations) {
-      if (conversation.isPrivate()) {
-        privateConversations.add(conversation);
-      }
-    }
-    return privateConversations;
+    return conversations.stream()
+      .filter(Conversation::isPrivate)
+      .collect(Collectors.toList());
   }
 
   /** Access the current set of private conversations known to the application. */
   public List<Conversation> getAllPrivateConversationsWithUserId(UUID userId) {
-    List<Conversation> privateConversations = new ArrayList<>();
-    for (Conversation conversation : conversations) {
-      if (conversation.isPrivate() && conversation.hasUserId(userId)) {
-        privateConversations.add(conversation);
-      }
-    }
-    return privateConversations;
+    return conversations.stream()
+      .filter(Conversation::isPrivate)
+      .filter(conv -> conv.hasUserId(userId))
+      .collect(Collectors.toList());
   }
 
   /** Add a new conversation to the current set of conversations known to the application. */

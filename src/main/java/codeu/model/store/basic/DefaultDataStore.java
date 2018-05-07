@@ -18,6 +18,7 @@ import codeu.model.data.Conversation;
 import codeu.model.data.Message;
 import codeu.model.data.User;
 import codeu.model.store.persistence.PersistentStorageAgent;
+import com.google.common.collect.ImmutableSet;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -118,7 +119,7 @@ public class DefaultDataStore {
       User user = getRandomElement(users);
       String title = "Conversation_" + i;
       Conversation conversation =
-          new Conversation(UUID.randomUUID(), user.getId(), title, Instant.now(), null);
+          new Conversation(UUID.randomUUID(), user.getId(), title, Instant.now(), ImmutableSet.of());
       PersistentStorageAgent.getInstance().writeThrough(conversation);
       conversations.add(conversation);
     }

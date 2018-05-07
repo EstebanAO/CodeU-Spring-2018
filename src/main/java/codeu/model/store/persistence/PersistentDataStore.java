@@ -23,6 +23,7 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
+import com.google.common.collect.ImmutableSet;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -103,9 +104,8 @@ public class PersistentDataStore {
         String title = (String) entity.getProperty("title");
         Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
         String usersString = entity.getProperty("users") != null ? (String) entity.getProperty("users") : null;
-        Set<UUID> users = null;
+        Set<UUID> users = new HashSet<>();
         if (usersString != null && !usersString.equals("null")) {
-          users = new HashSet<>();
           String[] elements = usersString.substring(1, usersString.length() - 1).split(", ");
           for (String item : elements) {
             users.add(UUID.fromString(item));
