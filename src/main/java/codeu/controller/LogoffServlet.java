@@ -16,8 +16,9 @@ public class LogoffServlet extends HttpServlet {
   @Override
   public void init() throws ServletException {
     super.init(); 
-	}
-/**
+  }
+	
+  /**
    * This function fires when a user requests the /logoff URL. It simply forwards the request to
    * logoff.jsp.
    */
