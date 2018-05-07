@@ -13,8 +13,9 @@ import org.mindrot.jbcrypt.BCrypt;
 
 /** Servlet class responsible for the logoff page. */
 public class LogoffServlet extends HttpServlet {
-	public void init() throws ServletException {
-		super.init(); 
+  @Override
+  public void init() throws ServletException {
+    super.init(); 
 	}
 /**
    * This function fires when a user requests the /logoff URL. It simply forwards the request to
