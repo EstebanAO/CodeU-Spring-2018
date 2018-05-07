@@ -18,10 +18,14 @@ import codeu.model.data.Conversation;
 import codeu.model.data.User;
 import codeu.model.store.basic.ConversationStore;
 import codeu.model.store.basic.UserStore;
+import com.google.common.collect.ImmutableSet;
 import java.io.IOException;
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+import java.util.Set;
+import java.util.HashSet;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -70,8 +74,17 @@ public class ConversationServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
-    List<Conversation> conversations = conversationStore.getAllConversations();
-    request.setAttribute("conversations", conversations);
+    List<Conversation> publicConversations = conversationStore.getAllPublicConversations();
+    request.setAttribute("publicConversations", publicConversations);
+
+    String username = (String) request.getSession().getAttribute("user");
+    if (username != null) {
+      User user = userStore.getUser(username);
+      if (user != null) {
+        List<Conversation> privateConversations = conversationStore.getAllPrivateConversationsWithUserId(user.getId());
+        request.setAttribute("privateConversations", privateConversations);
+      }
+    }
     request.getRequestDispatcher("/WEB-INF/view/conversations.jsp").forward(request, response);
   }
 
@@ -113,8 +126,14 @@ public class ConversationServlet extends HttpServlet {
       return;
     }
 
+    String action = request.getParameter("action");
+    Set<UUID> users = ImmutableSet.of();
+    if (action.equals("private")) {
+      users = new HashSet<>(Arrays.asList(user.getId()));
+    }
+
     Conversation conversation =
-        new Conversation(UUID.randomUUID(), user.getId(), conversationTitle, Instant.now());
+        new Conversation(UUID.randomUUID(), user.getId(), conversationTitle, Instant.now(), users);
 
     conversationStore.addConversation(conversation);
     response.sendRedirect("/chat/" + conversationTitle);

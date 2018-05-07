@@ -16,6 +16,9 @@ package codeu.model.data;
 
 import java.time.Instant;
 import java.util.UUID;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.Collection;
 
 /**
  * Class representing a conversation, which can be thought of as a chat room. Conversations are
@@ -26,6 +29,7 @@ public class Conversation {
   public final UUID owner;
   public final Instant creation;
   public final String title;
+  public final Set<UUID> users = new HashSet<>();
 
   /**
    * Constructs a new Conversation.
@@ -35,11 +39,12 @@ public class Conversation {
    * @param title the title of this Conversation
    * @param creation the creation time of this Conversation
    */
-  public Conversation(UUID id, UUID owner, String title, Instant creation) {
+  public Conversation(UUID id, UUID owner, String title, Instant creation, Collection<UUID> users) {
     this.id = id;
     this.owner = owner;
     this.creation = creation;
     this.title = title;
+    this.users.addAll(users);
   }
 
   /** Returns the ID of this Conversation. */
@@ -60,5 +65,29 @@ public class Conversation {
   /** Returns the creation time of this Conversation. */
   public Instant getCreationTime() {
     return creation;
+  }
+
+  /** Returns the users in the Conversation if private. */
+  public Set<UUID> getUsers() {
+    return users;
+  }
+
+  /** Returns the users in the Conversation as a String. */
+  public String getUsersString() {
+    return users.toString();
+  }
+
+  /** Returns if the user has access to private Conversation. */
+  public boolean hasUserId(UUID userId) {
+    return users.contains(userId);
+  }
+
+  /** Returns true if Conversation is private. */
+  public boolean isPrivate() {
+    return users.size() != 0;
+  }
+
+  public void addUserId(UUID userId) {
+    users.add(userId);
   }
 }
