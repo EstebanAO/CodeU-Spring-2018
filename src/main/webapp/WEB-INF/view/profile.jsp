@@ -31,18 +31,18 @@
 <body>
 
 <nav>
-    <a id="navTitle" href="/">CodeU Chat App</a>
-    <a href="/conversations">Conversations</a>
-    <% if (request.getSession().getAttribute("user") != null) { %>
-    <a>Hello <%= request.getSession().getAttribute("user") %>!</a>
-    <% } else { %>
-    <a href="/login">Login</a>
-    <a href="/register">Register</a>
-    <% } %>
-    <a href="/about.jsp">About</a>
-    <% if (request.getSession().getAttribute("user") != null) { %>
-    <a href="/logoff.jsp">Logoff</a>
-    <% } %>
+      <a id="navTitle" href="/">CodeU Chat App</a>
+      <a href="/conversations">Conversations</a>
+      <% if (request.getSession().getAttribute("user") != null) { %>
+      <% String userString = (String) request.getSession().getAttribute("user"); %>
+      <a href="/profile/<%= userString %>">Hello <%= userString %>!</a>
+      <a href="/logoff.jsp">Logoff</a>
+      <% } else { %>
+        <a href="/login">Login</a>
+        <a href="/register">Register</a>
+      <% } %>
+      <a href="/about.jsp">About</a>
+      <a href="/admin">Administrator</a>
 </nav>
 
 

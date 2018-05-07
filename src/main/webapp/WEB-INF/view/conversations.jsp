@@ -25,21 +25,21 @@
 </head>
 <body>
 
-  <nav>
+<nav>
       <a id="navTitle" href="/">CodeU Chat App</a>
       <a href="/conversations">Conversations</a>
       <% if (request.getSession().getAttribute("user") != null) { %>
-        <a>Hello <%= request.getSession().getAttribute("user") %>!</a>
+      <% String user = (String) request.getSession().getAttribute("user"); %>
+      <a href="/profile/<%= user %>">Hello <%= user %>!</a>
+      <a href="/logoff.jsp">Logoff</a>
       <% } else { %>
         <a href="/login">Login</a>
         <a href="/register">Register</a>
       <% } %>
       <a href="/about.jsp">About</a>
       <a href="/admin">Administrator</a>
-      <% if (request.getSession().getAttribute("user") != null) { %>
-      <a href="/logoff.jsp">Logoff</a>
-      <% } %>
-  </nav>
+</nav>
+
   
 
   <div id="container">

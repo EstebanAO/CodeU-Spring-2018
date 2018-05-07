@@ -23,33 +23,16 @@ UserStore userStore = UserStore.getInstance();
       <a id="navTitle" href="/">CodeU Chat App</a>
       <a href="/conversations">Conversations</a>
       <% if (request.getSession().getAttribute("user") != null) { %>
-        <a>Hello <%= request.getSession().getAttribute("user") %>!</a>
+      <% String user = (String) request.getSession().getAttribute("user"); %>
+      <a href="/profile/<%= user %>">Hello <%= user %>!</a>
+      <a href="/logoff.jsp">Logoff</a>
       <% } else { %>
         <a href="/login">Login</a>
         <a href="/register">Register</a>
       <% } %>
       <a href="/about.jsp">About</a>
       <a href="/admin">Administrator</a>
-      <% if (request.getSession().getAttribute("user") != null) { %>
-      <a href="/logoff.jsp">Logoff</a>
-      <% } %>
-      <% if (request.getSession().getAttribute("user") != null) { %>
-      <% User user = (User) request.getSession().getAttribute("user");
-        String userName = user.getName();
-        %>
-      <a href="/profile/<%= userName %>"><%= userName %></a>
-      <% } else { %>
-      <% } %>   
-  </nav>
-
-  <div id="container">
-    <form action="/" method="POST">
-     <% request.getSession().removeAttribute("user"); %>
-      <button type="submit">Logoff</button>
-    </form>
-    <hr/>
-  </div>
-  <div id="container">
+</nav>
 
   <div id= "container"> 
     <h1>Administrator</h1>
