@@ -49,8 +49,3 @@ public class ServerStartupListener implements ServletContextListener {
   @Override
   public void contextDestroyed(ServletContextEvent sce) {}
 }
-
-
-//Volver a poner los Storages como listas
-//Solo hacer una función de loadUsers byy hacerlo en lista
-//Cambiar set users by por solo una función que poble ambos maps dentro de userstore

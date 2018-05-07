@@ -19,20 +19,17 @@ import codeu.model.data.Message;
 import codeu.model.data.User;
 import codeu.model.store.persistence.PersistentStorageAgent;
 import java.time.Instant;
-import java.util.Map;
-import java.util.UUID;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
 import org.mindrot.jbcrypt.BCrypt;
-
 
 /**
  * This class makes it easy to add dummy data to your chat app instance. To use fake data, set
  * USE_DEFAULT_DATA to true, then adjust the COUNT variables to generate the corresponding amount of
  * users, conversations, and messages. Note that the data must be consistent, i.e. if a Message has
- * an author, that author must be a member of the Users map.
+ * an author, that author must be a member of the Users list.
  */
 public class DefaultDataStore {
 
@@ -63,15 +60,13 @@ public class DefaultDataStore {
     return instance;
   }
 
-  private Map<UUID, User> usersById;
-  private Map<String, User> usersByUsername;
+  private List<User> users;
   private List<Conversation> conversations;
   private List<Message> messages;
 
   /** This class is a singleton, so its constructor is private. Call getInstance() instead. */
   private DefaultDataStore() {
-    usersById = new HashMap<UUID, User>();
-    usersByUsername = new HashMap<String, User>();
+    users = new ArrayList<>();
     conversations = new ArrayList<>();
     messages = new ArrayList<>();
 
@@ -86,12 +81,8 @@ public class DefaultDataStore {
     return true;
   }
 
-  public Map<UUID, User> getAllUsersById() {
-    return usersById;
-  }
-
-  public Map<String, User> getAllUsersByUsername() {
-    return usersByUsername;
+  public List<User> getAllUsers() {
+    return users;
   }
 
   public List<Conversation> getAllConversations() {
@@ -113,23 +104,21 @@ public class DefaultDataStore {
 
     for (int i = 0; i < DEFAULT_USER_COUNT; i++) {
       User user = new User(UUID.randomUUID(),
-        randomUsernames.get(i),
-        Instant.now(),
-        BCrypt.hashpw("password", BCrypt.gensalt()),
+              randomUsernames.get(i),
+              Instant.now(),
+              BCrypt.hashpw("password", BCrypt.gensalt()),
               "Write about you...");
       PersistentStorageAgent.getInstance().writeThrough(user);
-      usersById.put(user.getId(), user);
-      usersByUsername.put(user.getName(), user);
-
+      users.add(user);
     }
   }
 
   private void addRandomConversations() {
     for (int i = 1; i <= DEFAULT_CONVERSATION_COUNT; i++) {
-      User user = getRandomUser(usersById);
+      User user = getRandomElement(users);
       String title = "Conversation_" + i;
       Conversation conversation =
-          new Conversation(UUID.randomUUID(), user.getId(), title, Instant.now());
+              new Conversation(UUID.randomUUID(), user.getId(), title, Instant.now());
       PersistentStorageAgent.getInstance().writeThrough(conversation);
       conversations.add(conversation);
     }
@@ -138,12 +127,12 @@ public class DefaultDataStore {
   private void addRandomMessages() {
     for (int i = 0; i < DEFAULT_MESSAGE_COUNT; i++) {
       Conversation conversation = getRandomElement(conversations);
-      User author = getRandomUser(usersById);
+      User author = getRandomElement(users);
       String content = getRandomMessageContent();
 
       Message message =
-          new Message(
-              UUID.randomUUID(), conversation.getId(), author.getId(), content, Instant.now());
+              new Message(
+                      UUID.randomUUID(), conversation.getId(), author.getId(), content, Instant.now());
       PersistentStorageAgent.getInstance().writeThrough(message);
       messages.add(message);
     }
@@ -152,13 +141,6 @@ public class DefaultDataStore {
   private <E> E getRandomElement(List<E> list) {
     return list.get((int) (Math.random() * list.size()));
   }
-
-  private User getRandomUser(Map<UUID, User> map) {
-    int position = (int) (Math.random() * map.size());
-    Map.Entry<UUID, User> userEntry = (Map.Entry<UUID, User>) usersById.entrySet().toArray()[position];
-    return userEntry.getValue();
-  }
-
 
   private List<String> getRandomUsernames() {
     List<String> randomUsernames = new ArrayList<>();
@@ -210,12 +192,12 @@ public class DefaultDataStore {
 
   private String getRandomMessageContent() {
     String loremIpsum =
-        "dolorem ipsum, quia dolor sit amet consectetur adipiscing velit, "
-            + "sed quia non numquam do eius modi tempora incididunt, ut labore et dolore magnam "
-            + "aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam "
-            + "corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum "
-            + "iure reprehenderit, qui in ea voluptate velit esse, quam nihil molestiae consequatur, vel illum, "
-            + "qui dolorem eum fugiat, quo voluptas nulla pariatur";
+            "dolorem ipsum, quia dolor sit amet consectetur adipiscing velit, "
+                    + "sed quia non numquam do eius modi tempora incididunt, ut labore et dolore magnam "
+                    + "aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam "
+                    + "corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum "
+                    + "iure reprehenderit, qui in ea voluptate velit esse, quam nihil molestiae consequatur, vel illum, "
+                    + "qui dolorem eum fugiat, quo voluptas nulla pariatur";
 
     int startIndex = (int) (Math.random() * (loremIpsum.length() - 100));
     int endIndex = (int) (startIndex + 10 + Math.random() * 90);

@@ -60,6 +60,7 @@ public class UserStore {
   /** The in-memory list of Users. */
   private Map<UUID, User> usersById;
   private Map<String, User> usersByUsername;
+  private List<User> users;
 
 
   /** This class is a singleton, so its constructor is private. Call getInstance() instead. */
@@ -67,12 +68,16 @@ public class UserStore {
     this.persistentStorageAgent = persistentStorageAgent;
     usersById = new HashMap<UUID, User>();
     usersByUsername = new HashMap<String, User>();
+    users = new ArrayList<User>();
   }
 
   /** Load a set of randomly-generated User objects. */
   public void loadTestData() {
-    usersByUsername.putAll(DefaultDataStore.getInstance().getAllUsersByUsername());
-    usersById.putAll(DefaultDataStore.getInstance().getAllUsersById());
+    users.addAll(DefaultDataStore.getInstance().getAllUsers());
+    for (User user : users) {
+      usersById.put(user.getId(), user);
+      usersByUsername.put(user.getName(), user);
+    }
   }
 
   /**
@@ -111,7 +116,7 @@ public class UserStore {
   }
 
   /**
-   * Sets the MAp of Users by username stored by this UserStore. This should only be called once, when the data
+   * Sets the Map of Users by username stored by this UserStore. This should only be called once, when the data
    * is loaded from Datastore.
    */
   public void setUsers(List<User> users) {
