@@ -80,6 +80,11 @@ public class UserStore {
     }
   }
 
+  /** Return a list of all users*/
+  public List<User> getUsers() {
+    return users;
+  }
+
   /**
    * Access the User object with the given name.
    *
