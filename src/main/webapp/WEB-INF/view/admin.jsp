@@ -53,7 +53,7 @@ UserStore userStore = UserStore.getInstance();
     <%
       for(User user : users){
       %>
-        <li><a href="/admin/<%= user.getName() %>">
+        <li><a href="/profile/<%= user.getName() %>">
           <%= user.getName() %></a></li>
       <%
       }
