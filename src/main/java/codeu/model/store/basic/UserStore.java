@@ -107,6 +107,7 @@ public class UserStore {
   public void addUser(User user) {
     this.usersById.put(user.getId(), user);
     this.usersByUsername.put(user.getName(), user);
+    this.users.add(user);
     this.persistentStorageAgent.writeThrough(user);
   }
 
@@ -125,9 +126,10 @@ public class UserStore {
    * is loaded from Datastore.
    */
   public void setUsers(List<User> users) {
+    this.users.addAll(users);
     for (User user : users) {
-      usersByUsername.put(user.getName(), user);
-      usersById.put(user.getId(), user);
+      this.usersByUsername.put(user.getName(), user);
+      this.usersById.put(user.getId(), user);
     }
   }
 }
