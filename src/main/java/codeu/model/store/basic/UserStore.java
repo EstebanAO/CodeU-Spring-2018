@@ -126,6 +126,7 @@ public class UserStore {
    * is loaded from Datastore.
    */
   public void setUsers(List<User> users) {
+    this.users.clear();
     this.users.addAll(users);
     for (User user : users) {
       this.usersByUsername.put(user.getName(), user);
