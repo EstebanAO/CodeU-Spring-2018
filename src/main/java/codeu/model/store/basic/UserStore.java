@@ -85,6 +85,12 @@ public class UserStore {
     return users;
   }
 
+  /** Return a list of all users*/
+  public List<User> getUsers() {
+    return users;
+  }
+
+
   /**
    * Access the User object with the given name.
    *
@@ -133,4 +139,15 @@ public class UserStore {
       this.usersById.put(user.getId(), user);
     }
   }
+
+  /** Returns the number of registered users. */
+  public int getUsersCount() {
+    return users != null ? users.size() : 0;
+  }
+
+  /** Returns the newest registered user if they exist. */
+  public String getNewestUser() {
+    return users != null && users.size() > 0 ? users.get(users.size() - 1).getName() : "";
+  }
+
 }

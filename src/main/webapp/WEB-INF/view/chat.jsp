@@ -49,36 +49,52 @@ UserStore userStore = UserStore.getInstance();
 </head>
 <body onload="scrollChat()">
 
-  <nav>
+<nav>
       <a id="navTitle" href="/">CodeU Chat App</a>
       <a href="/conversations">Conversations</a>
       <% if (request.getSession().getAttribute("user") != null) { %>
-        <a>Hello <%= request.getSession().getAttribute("user") %>!</a>
+      <% String user = (String) request.getSession().getAttribute("user"); %>
+      <a href="/profile/<%= user %>">Hello <%= user %>!</a>
+      <a href="/logoff.jsp">Logoff</a>
       <% } else { %>
         <a href="/login">Login</a>
         <a href="/register">Register</a>
       <% } %>
       <a href="/about.jsp">About</a>
-  </nav>
+      <a href="/admin">Administrator</a>
+</nav>
 
-
+  
   <div id="container">
 
     <h1><%= conversation.getTitle() %>
       <a href="" style="float: right">&#8635;</a></h1>
 
+    <% if (conversation.isPrivate()) { %>
+      <div style="display: flex; flex-direction: row; align-items: center;">
+        <p style="margin-right: 10px;">Add users: </p>
+        <form action="/chat/<%= conversation.getTitle() %>" method="POST">
+            <select name="people">
+              <%
+              List<User> users = (List<User>) request.getAttribute("users");
+              for (User user : users) {
+              %>
+                <option><%= user.getName() %></option>
+              <% } %>
+            </select>
+            <input type="submit" name="action" value="adduser"/>
+          </form>
+      </div>
+    <% } %>
     <hr/>
 
     <div id="chat">
       <ul>
     <%
       for (Message message : messages) {
-        String author = UserStore.getInstance()
-          .getUser(message.getAuthorId()).getName();
+        String author = userStore.getUser(message.getAuthorId()).getName();
     %>
-          <%User userMessage = userStore.getUser(message.getAuthorId());%>
-
-      <li><strong><a href="/profile/<%= userMessage.getName()%>"> <%= userMessage.getName() %> </a>:</strong> <%= message.getContent() %></li>
+      <li><strong><a href="/profile/<%= author %>"><%= author %></a></strong> <span class="time"><%= message.getTime() %></span>: <%= message.getContent() %></li>
     <%
       }
     %>
@@ -91,7 +107,7 @@ UserStore userStore = UserStore.getInstance();
     <form action="/chat/<%= conversation.getTitle() %>" method="POST">
         <input type="text" name="message">
         <br/>
-        <button type="submit">Send</button>
+        <button type="submit" name="action" value="sendmessage">Send</button>
     </form>
     <% } else { %>
       <p><a href="/login">Login</a> to send a message.</p>

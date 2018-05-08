@@ -23,10 +23,13 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
+import com.google.common.collect.ImmutableSet;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.Set;
+import java.util.HashSet;
 
 /**
  * This class handles all interactions with Google App Engine's Datastore service. On startup it
@@ -76,9 +79,9 @@ public class PersistentDataStore {
                 throw new PersistentDataStoreException(e);
             }
         }
-
+      
         return users;
-    }
+  }
 
     /**
      * Loads all Conversation objects from the Datastore service and returns them in a List.
@@ -143,39 +146,39 @@ public class PersistentDataStore {
                 throw new PersistentDataStoreException(e);
             }
         }
+    return messages;
+  }
 
-        return messages;
-    }
+  /** Write a User object to the Datastore service. */
+  public void writeThrough(User user) {
+    Entity userEntity = new Entity("chat-users", user.getId().toString());
+    userEntity.setProperty("uuid", user.getId().toString());
+    userEntity.setProperty("username", user.getName());
+    userEntity.setProperty("creation_time", user.getCreationTime().toString());
+    userEntity.setProperty("password", user.getPassword().toString());
+    userEntity.setProperty("aboutMe", user.getAboutMe());
+    datastore.put(userEntity);
+  }
 
-    /** Write a User object to the Datastore service. */
-    public void writeThrough(User user) {
-        Entity userEntity = new Entity("chat-users", user.getId().toString());
-        userEntity.setProperty("uuid", user.getId().toString());
-        userEntity.setProperty("username", user.getName());
-        userEntity.setProperty("creation_time", user.getCreationTime().toString());
-        userEntity.setProperty("password", user.getPassword().toString());
-        userEntity.setProperty("aboutMe", user.getAboutMe());
-        datastore.put(userEntity);
-    }
+  /** Write a Message object to the Datastore service. */
+  public void writeThrough(Message message) {
+    Entity messageEntity = new Entity("chat-messages");
+    messageEntity.setProperty("uuid", message.getId().toString());
+    messageEntity.setProperty("conv_uuid", message.getConversationId().toString());
+    messageEntity.setProperty("author_uuid", message.getAuthorId().toString());
+    messageEntity.setProperty("content", message.getContent());
+    messageEntity.setProperty("creation_time", message.getCreationTime().toString());
+    datastore.put(messageEntity);
+  }
 
-    /** Write a Message object to the Datastore service. */
-    public void writeThrough(Message message) {
-        Entity messageEntity = new Entity("chat-messages");
-        messageEntity.setProperty("uuid", message.getId().toString());
-        messageEntity.setProperty("conv_uuid", message.getConversationId().toString());
-        messageEntity.setProperty("author_uuid", message.getAuthorId().toString());
-        messageEntity.setProperty("content", message.getContent());
-        messageEntity.setProperty("creation_time", message.getCreationTime().toString());
-        datastore.put(messageEntity);
-    }
-
-    /** Write a Conversation object to the Datastore service. */
-    public void writeThrough(Conversation conversation) {
-        Entity conversationEntity = new Entity("chat-conversations");
-        conversationEntity.setProperty("uuid", conversation.getId().toString());
-        conversationEntity.setProperty("owner_uuid", conversation.getOwnerId().toString());
-        conversationEntity.setProperty("title", conversation.getTitle());
-        conversationEntity.setProperty("creation_time", conversation.getCreationTime().toString());
-        datastore.put(conversationEntity);
-    }
+  /** Write a Conversation object to the Datastore service. */
+  public void writeThrough(Conversation conversation) {
+    Entity conversationEntity = new Entity("chat-conversations");
+    conversationEntity.setProperty("uuid", conversation.getId().toString());
+    conversationEntity.setProperty("owner_uuid", conversation.getOwnerId().toString());
+    conversationEntity.setProperty("title", conversation.getTitle());
+    conversationEntity.setProperty("creation_time", conversation.getCreationTime().toString());
+    conversationEntity.setProperty("users", conversation.getUsersString());
+    datastore.put(conversationEntity);
+  }
 }

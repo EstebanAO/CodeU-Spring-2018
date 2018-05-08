@@ -14,6 +14,7 @@
   limitations under the License.
 --%>
 <%@ page import="java.util.List" %>
+<%@ page import="java.util.Calendar" %>
 <%@ page import="codeu.model.data.Conversation" %>
 
 <!DOCTYPE html>
@@ -24,17 +25,22 @@
 </head>
 <body>
 
-  <nav>
+<nav>
       <a id="navTitle" href="/">CodeU Chat App</a>
       <a href="/conversations">Conversations</a>
       <% if (request.getSession().getAttribute("user") != null) { %>
-        <a>Hello <%= request.getSession().getAttribute("user") %>!</a>
+      <% String user = (String) request.getSession().getAttribute("user"); %>
+      <a href="/profile/<%= user %>">Hello <%= user %>!</a>
+      <a href="/logoff.jsp">Logoff</a>
       <% } else { %>
         <a href="/login">Login</a>
         <a href="/register">Register</a>
       <% } %>
       <a href="/about.jsp">About</a>
-  </nav>
+      <a href="/admin">Administrator</a>
+</nav>
+
+  
 
   <div id="container">
 
@@ -50,27 +56,55 @@
           <input type="text" name="conversationTitle">
         </div>
 
-        <button type="submit">Create</button>
+        <button type="submit" name="action" value="public">Create Public</button>
+        <button type="submit" name="action" value="private">Create Private</button>
       </form>
 
       <hr/>
     <% } %>
-
-    <h1>Conversations</h1>
+    <h1>Private Conversations</h1>
+    <% System.out.println(Calendar.getInstance().getTime()); %>
 
     <%
-    List<Conversation> conversations =
-      (List<Conversation>) request.getAttribute("conversations");
-    if(conversations == null || conversations.isEmpty()){
+    List<Conversation> privateConversations =
+      (List<Conversation>) request.getAttribute("privateConversations");
+    if(privateConversations == null || privateConversations.isEmpty()){
     %>
-      <p>Create a conversation to get started.</p>
+      <p>Create a private conversation to get started.</p>
     <%
     }
     else{
     %>
       <ul class="mdl-list">
     <%
-      for(Conversation conversation : conversations){
+      for(Conversation conversation : privateConversations){
+    %>
+      <li><a href="/chat/<%= conversation.getTitle() %>">
+        <%= conversation.getTitle() %></a></li>
+    <%
+      }
+    %>
+      </ul>
+    <%
+    }
+    %>
+    <hr/>
+
+    <h1>Public Conversations</h1>
+
+    <%
+    List<Conversation> publicConversations =
+      (List<Conversation>) request.getAttribute("publicConversations");
+    if(publicConversations == null || publicConversations.isEmpty()){
+    %>
+      <p>Create a public conversation to get started.</p>
+    <%
+    }
+    else{
+    %>
+      <ul class="mdl-list">
+    <%
+      for(Conversation conversation : publicConversations){
     %>
       <li><a href="/chat/<%= conversation.getTitle() %>">
         <%= conversation.getTitle() %></a></li>

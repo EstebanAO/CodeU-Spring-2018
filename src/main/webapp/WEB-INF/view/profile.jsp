@@ -15,8 +15,11 @@
 --%>
 <%@ page import="java.util.List" %>
 <%@ page import="codeu.model.data.User" %>
+<%@ page import="codeu.model.data.Message" %>
 
-<% User user = (User) request.getAttribute("user"); %>
+<% User user = (User) request.getAttribute("user");
+   List<Message> messages = user.getMessages();
+%>
 
 
 <!DOCTYPE html>
@@ -28,16 +31,20 @@
 <body>
 
 <nav>
-    <a id="navTitle" href="/">CodeU Chat App</a>
-    <a href="/conversations">Conversations</a>
-    <% if (request.getSession().getAttribute("user") != null) { %>
-    <a>Hello <%= request.getSession().getAttribute("user") %>!</a>
-    <% } else { %>
-    <a href="/login">Login</a>
-    <a href="/register">Register</a>
-    <% } %>
-    <a href="/about.jsp">About</a>
+      <a id="navTitle" href="/">CodeU Chat App</a>
+      <a href="/conversations">Conversations</a>
+      <% if (request.getSession().getAttribute("user") != null) { %>
+      <% String userString = (String) request.getSession().getAttribute("user"); %>
+      <a href="/profile/<%= userString %>">Hello <%= userString %>!</a>
+      <a href="/logoff.jsp">Logoff</a>
+      <% } else { %>
+        <a href="/login">Login</a>
+        <a href="/register">Register</a>
+      <% } %>
+      <a href="/about.jsp">About</a>
+      <a href="/admin">Administrator</a>
 </nav>
+
 
 <div id="container">
 
@@ -58,6 +65,17 @@
          <button type="submit">Submit</button>
      </form>
     <%}%>
+    <h4>Sent Messages</h4>
+    <br/>
+    <% if (request.getSession().getAttribute("user") != null) {
+          for (Message message : messages) {%>
+            <%=user.getName()%>
+            <strong><a href="/chat/<%=user.getConversationTitle(message.getConversationId())%>"><%=user.getConversationTitle(message.getConversationId())%></a></strong>
+            <%=message.getContent()%>
+            <br/>
+          <%}
+    }%>
+
 </div>
 </body>
 </html>
