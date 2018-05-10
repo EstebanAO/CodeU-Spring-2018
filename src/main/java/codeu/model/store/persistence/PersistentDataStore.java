@@ -103,7 +103,15 @@ public class PersistentDataStore {
                 UUID ownerUuid = UUID.fromString((String) entity.getProperty("owner_uuid"));
                 String title = (String) entity.getProperty("title");
                 Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
-                Conversation conversation = new Conversation(uuid, ownerUuid, title, creationTime);
+                String usersString = entity.getProperty("users") != null ? (String) entity.getProperty("users") : null;
+                Set<UUID> users = new HashSet<>();
+                if (usersString != null && !usersString.equals("null")) {
+                    String[] elements = usersString.substring(1, usersString.length() - 1).split(", ");
+                    for (String item : elements) {
+                        users.add(UUID.fromString(item));
+                    }
+                }
+                Conversation conversation = new Conversation(uuid, ownerUuid, title, creationTime, users);
                 conversations.add(conversation);
             } catch (Exception e) {
                 // In a production environment, errors should be very rare. Errors which may
