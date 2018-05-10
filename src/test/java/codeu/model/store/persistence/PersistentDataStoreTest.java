@@ -27,7 +27,7 @@ public class PersistentDataStoreTest {
 
   private PersistentDataStore persistentDataStore;
   private final LocalServiceTestHelper appEngineTestHelper =
-      new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
+          new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
 
   @Before
   public void setup() {
@@ -123,7 +123,7 @@ public class PersistentDataStoreTest {
     String contentOne = "test content one";
     Instant creationOne = Instant.ofEpochMilli(1000);
     Message inputMessageOne =
-        new Message(idOne, conversationOne, authorOne, contentOne, creationOne);
+            new Message(idOne, conversationOne, authorOne, contentOne, creationOne);
 
     UUID idTwo = UUID.randomUUID();
     UUID conversationTwo = UUID.randomUUID();
@@ -131,7 +131,7 @@ public class PersistentDataStoreTest {
     String contentTwo = "test content one";
     Instant creationTwo = Instant.ofEpochMilli(2000);
     Message inputMessageTwo =
-        new Message(idTwo, conversationTwo, authorTwo, contentTwo, creationTwo);
+            new Message(idTwo, conversationTwo, authorTwo, contentTwo, creationTwo);
 
     // save
     persistentDataStore.writeThrough(inputMessageOne);

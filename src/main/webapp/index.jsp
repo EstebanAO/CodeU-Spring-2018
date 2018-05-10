@@ -34,7 +34,6 @@
       <% } %>
       <a href="/about.jsp">About</a>
       <a href="/admin">Administrator</a>
-      
 </nav>
 
   <div id="container">

@@ -18,6 +18,9 @@ import codeu.model.store.persistence.PersistentStorageAgent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Store class that uses in-memory data structures to hold values and automatically loads from and
@@ -55,17 +58,31 @@ public class UserStore {
   private PersistentStorageAgent persistentStorageAgent;
 
   /** The in-memory list of Users. */
+  private Map<UUID, User> usersById;
+  private Map<String, User> usersByUsername;
   private List<User> users;
+
 
   /** This class is a singleton, so its constructor is private. Call getInstance() instead. */
   private UserStore(PersistentStorageAgent persistentStorageAgent) {
     this.persistentStorageAgent = persistentStorageAgent;
-    users = new ArrayList<>();
+    usersById = new HashMap<UUID, User>();
+    usersByUsername = new HashMap<String, User>();
+    users = new ArrayList<User>();
   }
 
-  /** Load a set of randomly-generated Message objects. */
+  /** Load a set of randomly-generated User objects. */
   public void loadTestData() {
     users.addAll(DefaultDataStore.getInstance().getAllUsers());
+    for (User user : users) {
+      usersById.put(user.getId(), user);
+      usersByUsername.put(user.getName(), user);
+    }
+  }
+
+  /** Return a list of all users*/
+  public List<User> getUsers() {
+    return users;
   }
 
   /** Return a list of all users*/
@@ -80,13 +97,7 @@ public class UserStore {
    * @return null if username does not match any existing User.
    */
   public User getUser(String username) {
-    // This approach will be pretty slow if we have many users.
-    for (User user : users) {
-      if (user.getName().equals(username)) {
-        return user;
-      }
-    }
-    return null;
+    return usersByUsername.get(username);
   }
 
   /**
@@ -95,18 +106,15 @@ public class UserStore {
    * @return null if the UUID does not match any existing User.
    */
   public User getUser(UUID id) {
-    for (User user : users) {
-      if (user.getId().equals(id)) {
-        return user;
-      }
-    }
-    return null;
+    return usersById.get(id);
   }
 
   /** Add a new user to the current set of users known to the application. */
   public void addUser(User user) {
-    users.add(user);
-    persistentStorageAgent.writeThrough(user);
+    this.usersById.put(user.getId(), user);
+    this.usersByUsername.put(user.getName(), user);
+    this.users.add(user);
+    this.persistentStorageAgent.writeThrough(user);
   }
 
   /** Updates a user to the current set of users known to the application. */
@@ -116,20 +124,20 @@ public class UserStore {
 
   /** Return true if the given username is known to the application. */
   public boolean isUserRegistered(String username) {
-    for (User user : users) {
-      if (user.getName().equals(username)) {
-        return true;
-      }
-    }
-    return false;
+      return usersByUsername.containsKey(username);
   }
 
   /**
-   * Sets the List of Users stored by this UserStore. This should only be called once, when the data
+   * Sets the Map of Users by username stored by this UserStore. This should only be called once, when the data
    * is loaded from Datastore.
    */
   public void setUsers(List<User> users) {
-    this.users = users;
+    this.users.clear();
+    this.users.addAll(users);
+    for (User user : users) {
+      this.usersByUsername.put(user.getName(), user);
+      this.usersById.put(user.getId(), user);
+    }
   }
 
   /** Returns the number of registered users. */

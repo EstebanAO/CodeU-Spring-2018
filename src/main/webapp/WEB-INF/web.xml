@@ -105,7 +105,4 @@
     <servlet-name>LogoffServlet</servlet-name>
     <url-pattern>/logoff</url-pattern>
   </servlet-mapping>
-
-
-
 </web-app>
