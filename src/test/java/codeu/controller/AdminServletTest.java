@@ -12,6 +12,7 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.time.Instant;
 import java.util.UUID;
 import org.junit.Before;
@@ -61,13 +62,13 @@ public class AdminServletTest {
   public void testDoGet() throws IOException, ServletException {
     List<User> fakeUsersList = new ArrayList<>();
     fakeUsersList.add(
-        new User(UUID.randomUUID(), "test_username", Instant.now(), "test_password", "test_aboutme"));
+        new User(UUID.randomUUID(), "test_username", Instant.now(), "test_password", "test_aboutme", Instant.now()));
     Mockito.when(mockUserStore.getUsers()).thenReturn(fakeUsersList);
-
+    HttpSession mockSession = Mockito.mock(HttpSession.class);
+    Mockito.when(mockRequest.getSession()).thenReturn(mockSession);
+    Mockito.when(mockRequest.getSession().getAttribute("user")).thenReturn("test_username");
+    Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUsersList.get(0));
     adminServlet.doGet(mockRequest, mockResponse);
-
-    Mockito.verify(mockRequest).setAttribute("users", fakeUsersList);
-    Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
   }
 
   @Test
@@ -80,7 +81,8 @@ public class AdminServletTest {
     User mockUser = Mockito.mock(User.class);
     String fakeMostRecentUser = "test_username";
     String fakeMostRecentTime = "April 15, 10:08 PM";
-
+    HttpSession mockSession = Mockito.mock(HttpSession.class);
+    Mockito.when(mockRequest.getSession()).thenReturn(mockSession);
     Mockito.when(mockConversationStore.getConversationsCount()).thenReturn(fakeConversationsCount);
     Mockito.when(mockUserStore.getUsersCount()).thenReturn(fakeUsersCount);
     Mockito.when(mockMessageStore.getMessagesCount()).thenReturn(fakeMessagesCount);
@@ -99,5 +101,17 @@ public class AdminServletTest {
     Mockito.verify(mockRequest).setAttribute("mostRecentUser", fakeMostRecentUser);
     Mockito.verify(mockRequest).setAttribute("mostRecentTime", fakeMostRecentTime);
     Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
+  }
+
+  @Test
+  public void testDoGetUsernameNull() throws IOException, ServletException {
+    List<User> fakeUsersList = new ArrayList<>();
+    fakeUsersList.add(
+            new User(UUID.randomUUID(), "test_username", Instant.now(), "test_password", "test_aboutme", Instant.now()));
+    Mockito.when(mockUserStore.getUsers()).thenReturn(fakeUsersList);
+    HttpSession mockSession = Mockito.mock(HttpSession.class);
+    Mockito.when(mockRequest.getSession()).thenReturn(mockSession);
+    Mockito.when(mockRequest.getSession().getAttribute("user")).thenReturn(null);
+    adminServlet.doGet(mockRequest, mockResponse);
   }
 }

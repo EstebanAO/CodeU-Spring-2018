@@ -47,13 +47,13 @@ public class PersistentDataStoreTest {
     String nameOne = "test_username_one";
     Instant creationOne = Instant.ofEpochMilli(1000);
     String passOne = "test_password_one";
-    User inputUserOne = new User(idOne, nameOne, creationOne, passOne, "Write about you...");
+    User inputUserOne = new User(idOne, nameOne, creationOne, passOne, "Write about you...", Instant.now());
 
     UUID idTwo = UUID.randomUUID();
     String nameTwo = "test_username_two";
     Instant creationTwo = Instant.ofEpochMilli(2000);
     String passTwo = "test_password_two";
-    User inputUserTwo = new User(idTwo, nameTwo, creationTwo, passTwo, "Write about you...");
+    User inputUserTwo = new User(idTwo, nameTwo, creationTwo, passTwo, "Write about you...", Instant.now());
 
     // save
     persistentDataStore.writeThrough(inputUserOne);
