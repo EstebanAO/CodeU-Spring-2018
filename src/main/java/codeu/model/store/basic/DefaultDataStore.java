@@ -108,7 +108,8 @@ public class DefaultDataStore {
               randomUsernames.get(i),
               Instant.now(),
               BCrypt.hashpw("password", BCrypt.gensalt()),
-              "Write about you...");
+              "Write about you...",
+              Instant.now());
       PersistentStorageAgent.getInstance().writeThrough(user);
       users.add(user);
     }

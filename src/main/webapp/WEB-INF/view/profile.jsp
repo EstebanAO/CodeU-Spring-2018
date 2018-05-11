@@ -59,14 +59,13 @@
     <% if (request.getSession().getAttribute("user") != null &&
             request.getSession().getAttribute("user").equals(user.getName())) { %>
         <form action="/profile" method="POST">
-            <h3>Edit your About Me (Only you can see this) </h3>
+            <h4>Edit your About Me (Only you can see this) </h4>
           <input type="text" name="aboutMe" id="aboutMe" size="80" value="<%= user.getAboutMe()%>">
          <br/><br/>
          <button type="submit">Submit</button>
      </form>
     <%}%>
     <h4>Sent Messages</h4>
-    <br/>
     <% if (request.getSession().getAttribute("user") != null) {
 
         if (request.getSession().getAttribute("user").equals(user.getName())) {%>
@@ -86,6 +85,10 @@
             </br>
         <%}}
     }%>
+    <h4>Last Active Session</h4>
+    <%= user.getLastConnectionFomatted()%>
+    <br/>
+    <br/>
 
 </div>
 </body>
