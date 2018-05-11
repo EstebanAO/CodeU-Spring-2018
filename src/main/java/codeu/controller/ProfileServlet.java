@@ -41,6 +41,15 @@ public class ProfileServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
+        //Updates lastConnection of the user. It is updated before it is displayed.
+        String username = (String) request.getSession().getAttribute("user");
+        if (username != null)
+        {
+            User userLastConnection = userStore.getUser(username);
+            userLastConnection.setLastConnection(Instant.now());
+            userStore.updateUser(userLastConnection);
+        }
+
         String requestUrl = request.getRequestURI();
         String userName = requestUrl.substring(Servlets.PROFILE_PATH.length());
         User user = userStore.getUser(userName);
@@ -64,5 +73,15 @@ public class ProfileServlet extends HttpServlet {
         user.setAboutMe(aboutMe);
         userStore.updateUser(user);
         response.sendRedirect(Servlets.PROFILE_PATH + userName);
+
+        //Updates lastConnection of the user.
+        String username = (String) request.getSession().getAttribute("user");
+        if (username != null)
+        {
+            User userLastConnection = userStore.getUser(username);
+            userLastConnection.setLastConnection(Instant.now());
+            userStore.updateUser(userLastConnection);
+        }
+
     }
 }

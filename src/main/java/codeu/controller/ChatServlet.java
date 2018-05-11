@@ -98,9 +98,8 @@ public class ChatServlet extends HttpServlet {
       response.sendRedirect("/conversations");
       return;
     }
-
+    String userName = (String) request.getSession().getAttribute("user");
     if (conversation.isPrivate()) {
-      String userName = (String) request.getSession().getAttribute("user");
       if (userName == null) {
         System.out.println("User did not have access to private conversation: " + conversationTitle);
         response.sendRedirect("/conversations");
@@ -128,6 +127,14 @@ public class ChatServlet extends HttpServlet {
     request.setAttribute("messages", messages);
     request.setAttribute("users", users);
     request.getRequestDispatcher("/WEB-INF/view/chat.jsp").forward(request, response);
+
+    //Updates lastConnection of the user.
+    if (userName != null)
+    {
+      User userLastConnection = userStore.getUser(userName);
+      userLastConnection.setLastConnection(Instant.now());
+      userStore.updateUser(userLastConnection);
+    }
   }
 
   /**
@@ -190,5 +197,13 @@ public class ChatServlet extends HttpServlet {
 
     // redirect to a GET request
     response.sendRedirect("/chat/" + conversationTitle);
+
+    //Updates lastConnection of the user.
+    if (username != null)
+    {
+      User userLastConnection = userStore.getUser(username);
+      userLastConnection.setLastConnection(Instant.now());
+      userStore.updateUser(userLastConnection);
+    }
   }
 }

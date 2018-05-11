@@ -86,6 +86,14 @@ public class ConversationServlet extends HttpServlet {
       }
     }
     request.getRequestDispatcher("/WEB-INF/view/conversations.jsp").forward(request, response);
+
+    //Updates the last connection of the User
+    if (username != null)
+    {
+      User userLastConnection = userStore.getUser(username);
+      userLastConnection.setLastConnection(Instant.now());
+      userStore.updateUser(userLastConnection);
+    }
   }
 
   /**
@@ -137,5 +145,13 @@ public class ConversationServlet extends HttpServlet {
 
     conversationStore.addConversation(conversation);
     response.sendRedirect("/chat/" + conversationTitle);
+
+    //Updates the last connection of the User
+    if (username != null)
+    {
+      User userLastConnection = userStore.getUser(username);
+      userLastConnection.setLastConnection(Instant.now());
+      userStore.updateUser(userLastConnection);
+    }
   }
 }
