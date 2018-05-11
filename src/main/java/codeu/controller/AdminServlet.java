@@ -86,7 +86,5 @@ public void setUserStore(UserStore userStore) {
     request.setAttribute("mostRecentUser", mostRecentUser);
     request.setAttribute("mostRecentTime", mostRecentTime);
     request.getRequestDispatcher("/WEB-INF/view/admin.jsp").forward(request, response);
-
-
   }
 }
