@@ -87,8 +87,12 @@ public class User {
       return messagesByUser;
   }
 
-  public String getConversationTitle(UUID conversationId){
+  public String getConversationTitle(UUID conversationId) {
       return conversationStore.getConversationTitleWithId(conversationId);
+  }
+
+  public void removeMessage(Message message) {
+      messageStore.removeMessage(message);
   }
 
   /** Returns the last connection of this User. */
@@ -106,4 +110,5 @@ public class User {
   public void setLastConnection(Instant lastConnection) {
     this.lastConnection = lastConnection;
   }
+  
 }

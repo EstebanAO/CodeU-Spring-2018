@@ -67,12 +67,23 @@
     <%}%>
     <h4>Sent Messages</h4>
     <% if (request.getSession().getAttribute("user") != null) {
-          for (Message message : messages) {%>
-            <%=user.getName()%>
+
+        if (request.getSession().getAttribute("user").equals(user.getName())) {%>
+        <form action=/removeMessage method="POST">
+        <%  for (Message message : messages) {%>
+            <p><input type="checkbox" name="<%=message.getId()%>" value="1"/>
+            <strong><a href="/chat/<%=user.getConversationTitle(message.getConversationId())%>"><%=user.getConversationTitle(message.getConversationId())%></a></strong>
+            <%=message.getContent()%></p> <%
+        }%>
+        <button type="submit">Delete Messages</button>
+        </form>
+
+        <%} else {
+            for(Message message : messages) {%>
             <strong><a href="/chat/<%=user.getConversationTitle(message.getConversationId())%>"><%=user.getConversationTitle(message.getConversationId())%></a></strong>
             <%=message.getContent()%>
-            <br/>
-          <%}
+            </br>
+        <%}}
     }%>
     <h4>Last Active Session</h4>
     <%= user.getLastConnectionFomatted()%>

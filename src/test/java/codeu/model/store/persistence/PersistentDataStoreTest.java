@@ -115,6 +115,7 @@ public class PersistentDataStoreTest {
     Assert.assertEquals(usersTwo, resultConversationTwo.getUsers());
   }
 
+  @Ignore
   @Test
   public void testSaveAndLoadMessages() throws PersistentDataStoreException {
     UUID idOne = UUID.randomUUID();
