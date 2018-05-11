@@ -28,7 +28,6 @@ public class Message {
   private final UUID author;
   private final String content;
   private final Instant creation;
-  // private final MessageStore messageStore;
 
   /**
    * Constructs a new Message.
@@ -45,7 +44,6 @@ public class Message {
     this.author = author;
     this.content = content;
     this.creation = creation;
-    // this.messageStore = MessageStore.getInstance();
   }
 
   /** Returns the ID of this Message. */
@@ -79,8 +77,4 @@ public class Message {
     SimpleDateFormat formatter = new SimpleDateFormat("MMMM dd, hh:mm a");
     return formatter.format(messageDate);
   }
-  //
-  // public void removeMessage() {
-  //     messageStore.removeMessage(this);
-  // }
 }
