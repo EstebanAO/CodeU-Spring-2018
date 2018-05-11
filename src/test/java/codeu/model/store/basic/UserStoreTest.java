@@ -5,6 +5,8 @@ import codeu.model.store.persistence.PersistentStorageAgent;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.UUID;
 import org.junit.Assert;
 import org.junit.Before;
@@ -28,11 +30,13 @@ public class UserStoreTest {
     mockPersistentStorageAgent = Mockito.mock(PersistentStorageAgent.class);
     userStore = UserStore.getTestInstance(mockPersistentStorageAgent);
 
-    final List<User> userList = new ArrayList<>();
-    userList.add(USER_ONE);
-    userList.add(USER_TWO);
-    userList.add(USER_THREE);
-    userStore.setUsers(userList);
+    final List<User> users = new ArrayList< User>();
+    users.add(USER_ONE);
+    users.add(USER_TWO);
+    users.add(USER_THREE);
+    for (User user : users) {
+      userStore.addUser(user);
+    }
   }
 
   @Test

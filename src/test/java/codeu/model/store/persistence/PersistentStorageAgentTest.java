@@ -4,7 +4,9 @@ import codeu.model.data.Conversation;
 import codeu.model.data.Message;
 import codeu.model.data.User;
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.UUID;
+import java.util.HashSet;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -54,7 +56,7 @@ public class PersistentStorageAgentTest {
   @Test
   public void testWriteThroughConversation() {
     Conversation conversation =
-        new Conversation(UUID.randomUUID(), UUID.randomUUID(), "test_conversation", Instant.now());
+        new Conversation(UUID.randomUUID(), UUID.randomUUID(), "test_conversation", Instant.now(), new HashSet<>(Arrays.asList(UUID.randomUUID())));
     persistentStorageAgent.writeThrough(conversation);
     Mockito.verify(mockPersistentDataStore).writeThrough(conversation);
   }
@@ -62,8 +64,8 @@ public class PersistentStorageAgentTest {
   @Test
   public void testWriteThroughMessage() {
     Message message =
-        new Message(
-            UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID(), "test content", Instant.now());
+            new Message(
+                    UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID(), "test content", Instant.now());
     persistentStorageAgent.writeThrough(message);
     Mockito.verify(mockPersistentDataStore).writeThrough(message);
   }

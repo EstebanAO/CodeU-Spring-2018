@@ -18,6 +18,7 @@ import codeu.model.data.Conversation;
 import codeu.model.data.User;
 import codeu.model.store.basic.ConversationStore;
 import codeu.model.store.basic.UserStore;
+import com.google.common.collect.ImmutableSet;
 import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -68,12 +69,12 @@ public class ConversationServletTest {
   public void testDoGet() throws IOException, ServletException {
     List<Conversation> fakeConversationList = new ArrayList<>();
     fakeConversationList.add(
-        new Conversation(UUID.randomUUID(), UUID.randomUUID(), "test_conversation", Instant.now()));
-    Mockito.when(mockConversationStore.getAllConversations()).thenReturn(fakeConversationList);
+        new Conversation(UUID.randomUUID(), UUID.randomUUID(), "test_conversation", Instant.now(), ImmutableSet.of()));
+    Mockito.when(mockConversationStore.getAllPublicConversations()).thenReturn(fakeConversationList);
 
     conversationServlet.doGet(mockRequest, mockResponse);
 
-    Mockito.verify(mockRequest).setAttribute("conversations", fakeConversationList);
+    Mockito.verify(mockRequest).setAttribute("publicConversations", fakeConversationList);
     Mockito.verify(mockRequestDispatcher).forward(mockRequest, mockResponse);
   }
 
@@ -142,6 +143,8 @@ public class ConversationServletTest {
     Mockito.when(mockUserStore.getUser("test_username")).thenReturn(fakeUser);
 
     Mockito.when(mockConversationStore.isTitleTaken("test_conversation")).thenReturn(false);
+
+    Mockito.when(mockRequest.getParameter("action")).thenReturn("public");
 
     conversationServlet.doPost(mockRequest, mockResponse);
 
