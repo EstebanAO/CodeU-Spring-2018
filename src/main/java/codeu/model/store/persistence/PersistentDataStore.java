@@ -180,6 +180,17 @@ public class PersistentDataStore {
   }
 
   public void removeThrough(Message message) {
+      // Retrieve all messages from the datastore.
+      Query query = new Query("chat-messages");
+      PreparedQuery results = datastore.prepare(query);
+
+      for (Entity entity : results.asIterable()) {
+          UUID uuid = UUID.fromString((String) entity.getProperty("uuid"));
+            if(uuid.equals(message.getId()))
+                {
+                    datastore.delete(entity.getKey());
+                }
+          }
     // for(Entity storedMessageEntity : messageEntities) {
     //     if(storedMessageEntity.getProperty("uuid").equals(message.getId().toString())) {
         // datastore.delete("chat-messages", message.getId().toString());
