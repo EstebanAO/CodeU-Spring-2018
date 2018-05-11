@@ -21,6 +21,8 @@ import codeu.model.store.persistence.PersistentDataStoreException;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import java.time.Instant;
@@ -147,6 +149,8 @@ public class PersistentDataStore {
     return messages;
   }
 
+  List<Entity> messageEntities = new ArrayList<>();
+
   /** Write a User object to the Datastore service. */
   public void writeThrough(User user) {
     Entity userEntity = new Entity("chat-users", user.getId().toString());
@@ -160,13 +164,28 @@ public class PersistentDataStore {
 
   /** Write a Message object to the Datastore service. */
   public void writeThrough(Message message) {
-    Entity messageEntity = new Entity("chat-messages");
+    Entity messageEntity = new Entity("chat-messages", message.getId().toString());
     messageEntity.setProperty("uuid", message.getId().toString());
     messageEntity.setProperty("conv_uuid", message.getConversationId().toString());
     messageEntity.setProperty("author_uuid", message.getAuthorId().toString());
     messageEntity.setProperty("content", message.getContent());
     messageEntity.setProperty("creation_time", message.getCreationTime().toString());
     datastore.put(messageEntity);
+    for(Entity storedMessageEntity : messageEntities) {
+        if(messageEntity.getKey().equals(storedMessageEntity.getKey())) {
+            messageEntities.add(messageEntity);
+            return;
+        }
+    }
+  }
+
+  public void removeThrough(Message message) {
+    // for(Entity storedMessageEntity : messageEntities) {
+    //     if(storedMessageEntity.getProperty("uuid").equals(message.getId().toString())) {
+        // datastore.delete("chat-messages", message.getId().toString());
+    //         return;
+    //     }
+    // }
   }
 
   /** Write a Conversation object to the Datastore service. */

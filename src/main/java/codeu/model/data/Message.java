@@ -18,6 +18,7 @@ import java.time.Instant;
 import java.util.UUID;
 import java.util.Date;
 import java.text.SimpleDateFormat;
+import codeu.model.store.basic.MessageStore;
 
 /** Class representing a message. Messages are sent by a User in a Conversation. */
 public class Message {
@@ -27,6 +28,7 @@ public class Message {
   private final UUID author;
   private final String content;
   private final Instant creation;
+  // private final MessageStore messageStore;
 
   /**
    * Constructs a new Message.
@@ -43,6 +45,7 @@ public class Message {
     this.author = author;
     this.content = content;
     this.creation = creation;
+    // this.messageStore = MessageStore.getInstance();
   }
 
   /** Returns the ID of this Message. */
@@ -76,4 +79,8 @@ public class Message {
     SimpleDateFormat formatter = new SimpleDateFormat("MMMM dd, hh:mm a");
     return formatter.format(messageDate);
   }
+  //
+  // public void removeMessage() {
+  //     messageStore.removeMessage(this);
+  // }
 }

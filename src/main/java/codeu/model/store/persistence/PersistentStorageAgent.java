@@ -103,4 +103,8 @@ public class PersistentStorageAgent {
   public void writeThrough(Message message) {
     persistentDataStore.writeThrough(message);
   }
+
+  public void removeThrough(Message message) {
+    persistentDataStore.removeThrough(message);
+  }
 }

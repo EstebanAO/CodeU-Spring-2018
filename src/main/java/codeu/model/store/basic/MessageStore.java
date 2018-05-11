@@ -90,6 +90,11 @@ public class MessageStore {
     persistentStorageAgent.writeThrough(message);
   }
 
+  public void removeMessage(Message message) {
+      messages.remove(message);
+      persistentStorageAgent.removeThrough(message);
+  }
+
   /** Access the current set of Messages within the given Conversation. */
   public List<Message> getMessagesInConversation(UUID conversationId) {
 
