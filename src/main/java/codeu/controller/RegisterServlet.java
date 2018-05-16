@@ -65,6 +65,7 @@ public class RegisterServlet extends HttpServlet {
     String aboutMe = "Write about you...";
     User user = new User(UUID.randomUUID(), username, Instant.now(), passwordHash, aboutMe, Instant.now());
     userStore.addUser(user);
-    response.sendRedirect("/login");
+    request.getSession().setAttribute("user", username);
+    response.sendRedirect("/conversations");
   }
 }

@@ -31,7 +31,7 @@
 <body>
 
 <nav>
-      <a id="navTitle" href="/">CodeU Chat App</a>
+      <a id="navTitle" href="/">Team1 Chat App</a>
       <a href="/conversations">Conversations</a>
       <% if (request.getSession().getAttribute("user") != null) { %>
       <% String userString = (String) request.getSession().getAttribute("user"); %>
