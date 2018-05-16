@@ -16,13 +16,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>CodeU Chat App</title>
+  <title>Team1 Chat App</title>
   <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
 
 <nav>
-      <a id="navTitle" href="/">CodeU Chat App</a>
+      <a id="navTitle" href="/">Team1 Chat App</a>
       <a href="/conversations">Conversations</a>
       <% if (request.getSession().getAttribute("user") != null) { %>
       <% String user = (String) request.getSession().getAttribute("user"); %>
@@ -34,18 +34,21 @@
       <% } %>
       <a href="/about.jsp">About</a>
       <a href="/admin">Administrator</a>
-      
 </nav>
 
   <div id="container">
-    <div
-      style="width:75%; margin-left:auto; margin-right:auto; margin-top: 50px;">
+    <div>
 
-      <h1>CodeU Chat App</h1>
-      <h2>Welcome!</h2>
+      <h1>Welcome!</h1>
 
       <ul>
+        <% if (request.getSession().getAttribute("user") != null) { %>
+        <% String user = (String) request.getSession().getAttribute("user"); %>
+        <li>View your<a href="/profile/<%= user %>"> profile page</a>.</li>
+        <% } else { %>
         <li><a href="/login">Login</a> to get started.</li>
+        <% }  %>
+        
         <li>Go to the <a href="/conversations">conversations</a> page to
             create or join a conversation.</li>
         <li>View the <a href="/about.jsp">about</a> page to learn more about the
