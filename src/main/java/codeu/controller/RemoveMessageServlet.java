@@ -1,6 +1,7 @@
 package codeu.controller;
 
 import codeu.model.data.User;
+import codeu.model.data.Message;
 import codeu.model.store.basic.UserStore;
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -12,11 +13,15 @@ import java.util.UUID;
 import codeu.model.data.User;
 import codeu.model.store.basic.UserStore;
 import org.mindrot.jbcrypt.BCrypt;
+import java.util.ArrayList;
+import java.util.List;
+import codeu.model.store.basic.MessageStore;
+import codeu.model.store.basic.ConversationStore;
 
 /**
  * Servlet class responsible for displaying the user profile.
  */
-public class ProfileServlet extends HttpServlet {
+public class RemoveMessageServlet extends HttpServlet {
 
     private UserStore userStore;
 
@@ -41,15 +46,6 @@ public class ProfileServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
-        //Updates lastConnection of the user. It is updated before it is displayed.
-        String username = (String) request.getSession().getAttribute("user");
-        if (username != null)
-        {
-            User userLastConnection = userStore.getUser(username);
-            userLastConnection.setLastConnection(Instant.now());
-            userStore.updateUser(userLastConnection);
-        }
-
         String requestUrl = request.getRequestURI();
         String userName = requestUrl.substring(Servlets.PROFILE_PATH.length());
         User user = userStore.getUser(userName);
@@ -66,22 +62,19 @@ public class ProfileServlet extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {
-        String aboutMe = request.getParameter("aboutMe");
         String userName = (String) request.getSession().getAttribute("user");
 
         User user = userStore.getUser(userName);
-        user.setAboutMe(aboutMe);
-        userStore.updateUser(user);
-        response.sendRedirect(Servlets.PROFILE_PATH + userName);
+        List<Message> messagesByUser = user.getMessages();
 
-        //Updates lastConnection of the user.
-        String username = (String) request.getSession().getAttribute("user");
-        if (username != null)
+        for(Message message : messagesByUser)
         {
-            User userLastConnection = userStore.getUser(username);
-            userLastConnection.setLastConnection(Instant.now());
-            userStore.updateUser(userLastConnection);
+            if(request.getParameter(message.getId().toString()) != null)
+            {
+                user.removeMessage(message);
+            }
         }
 
+        response.sendRedirect(Servlets.PROFILE_PATH + userName);
     }
 }

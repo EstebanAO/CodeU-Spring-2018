@@ -22,8 +22,12 @@ import codeu.model.store.basic.MessageStore;
 import codeu.model.store.basic.UserStore;
 import java.io.IOException;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
+import java.util.Set;
+import java.util.stream.Collectors;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -94,14 +98,43 @@ public class ChatServlet extends HttpServlet {
       response.sendRedirect("/conversations");
       return;
     }
+    String userName = (String) request.getSession().getAttribute("user");
+    if (conversation.isPrivate()) {
+      if (userName == null) {
+        System.out.println("User did not have access to private conversation: " + conversationTitle);
+        response.sendRedirect("/conversations");
+        return;
+      } else {
+        User user = userStore.getUser(userName);
+        UUID userId = user.getId();
+        if (!conversation.hasUserId(userId)) {
+          System.out.println("User did not have access to private conversation: " + conversationTitle);
+          response.sendRedirect("/conversations");
+          return;
+        }
+      }
+    }
 
     UUID conversationId = conversation.getId();
 
     List<Message> messages = messageStore.getMessagesInConversation(conversationId);
+    Set<UUID> existingUsersId = conversation.getUsers();
+    List<User> users = userStore.getUsers().stream()
+      .filter(user -> existingUsersId == null || !existingUsersId.contains(user.getId()))
+      .collect(Collectors.toList());
 
     request.setAttribute("conversation", conversation);
     request.setAttribute("messages", messages);
+    request.setAttribute("users", users);
     request.getRequestDispatcher("/WEB-INF/view/chat.jsp").forward(request, response);
+
+    //Updates lastConnection of the user.
+    if (userName != null)
+    {
+      User userLastConnection = userStore.getUser(userName);
+      userLastConnection.setLastConnection(Instant.now());
+      userStore.updateUser(userLastConnection);
+    }
   }
 
   /**
@@ -138,22 +171,39 @@ public class ChatServlet extends HttpServlet {
       return;
     }
 
-    String messageContent = request.getParameter("message");
+    String action = request.getParameter("action");
+    if (action.equals("sendmessage")) {
+      String messageContent = request.getParameter("message");
 
-    // this removes any HTML from the message content
-    String cleanedMessageContent = Jsoup.clean(messageContent, Whitelist.none());
+      // this removes any HTML from the message content
+      String cleanedMessageContent = Jsoup.clean(messageContent, Whitelist.none());
 
-    Message message =
-        new Message(
-            UUID.randomUUID(),
-            conversation.getId(),
-            user.getId(),
-            cleanedMessageContent,
-            Instant.now());
+      Message message =
+          new Message(
+              UUID.randomUUID(),
+              conversation.getId(),
+              user.getId(),
+              cleanedMessageContent,
+              Instant.now());
 
-    messageStore.addMessage(message);
+      messageStore.addMessage(message);
+    } else {
+      String name = request.getParameter("people");
+      User newUser = userStore.getUser(name);
+      if (newUser != null) {
+        conversation.addUserId(newUser.getId());
+      }
+    }
 
     // redirect to a GET request
     response.sendRedirect("/chat/" + conversationTitle);
+
+    //Updates lastConnection of the user.
+    if (username != null)
+    {
+      User userLastConnection = userStore.getUser(username);
+      userLastConnection.setLastConnection(Instant.now());
+      userStore.updateUser(userLastConnection);
+    }
   }
 }

@@ -18,6 +18,7 @@ import java.time.Instant;
 import java.util.UUID;
 import java.util.Date;
 import java.text.SimpleDateFormat;
+import codeu.model.store.basic.MessageStore;
 
 /** Class representing a message. Messages are sent by a User in a Conversation. */
 public class Message {

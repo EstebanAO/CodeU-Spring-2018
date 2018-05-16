@@ -1,4 +1,5 @@
 
+
 <%@ page import="java.util.List" %>
 <%@ page import="codeu.model.data.User" %>
 <%@ page import="codeu.model.data.Conversation" %>
@@ -19,6 +20,7 @@ UserStore userStore = UserStore.getInstance();
       </style>
 </head>
 <body>
+
     <nav>
       <a id="navTitle" href="/">Team1 Chat App</a>
       <a href="/conversations">Conversations</a>

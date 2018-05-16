@@ -87,6 +87,16 @@
   </servlet-mapping>
 
   <servlet>
+    <servlet-name>RemoveMessageServlet</servlet-name>
+    <servlet-class>codeu.controller.RemoveMessageServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>RemoveMessageServlet</servlet-name>
+    <url-pattern>/removeMessage</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
     <servlet-name>AdminServlet</servlet-name>
     <servlet-class>codeu.controller.AdminServlet</servlet-class>
   </servlet>
@@ -105,7 +115,4 @@
     <servlet-name>LogoffServlet</servlet-name>
     <url-pattern>/logoff</url-pattern>
   </servlet-mapping>
-
-
-
 </web-app>

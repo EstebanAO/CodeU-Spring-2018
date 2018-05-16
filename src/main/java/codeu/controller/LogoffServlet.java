@@ -13,19 +13,41 @@ import org.mindrot.jbcrypt.BCrypt;
 
 /** Servlet class responsible for the logoff page. */
 public class LogoffServlet extends HttpServlet {
+    /** Store class that gives access to Users. */
+    private UserStore userStore;
+
   @Override
   public void init() throws ServletException {
-    super.init(); 
+      super.init();
+      setUserStore(UserStore.getInstance());
   }
-  /**
+
+    /**
+     * Sets the UserStore used by this servlet. This function provides a common setup method for use
+     * by the test framework or the servlet's init() function.
+     */
+    void setUserStore(UserStore userStore) {
+        this.userStore = userStore;
+    }
+
+    /**
    * This function fires when a user requests the /logoff URL. It simply forwards the request to
    * logoff.jsp.
    */
- 	@Override
- 	public void doGet(HttpServletRequest request, HttpServletResponse response)
-   	  throws IOException, ServletException {
-   	  request.getRequestDispatcher("/logoff").forward(request, response);
-  }
+  @Override
+  public void doGet(HttpServletRequest request, HttpServletResponse response)
+    throws IOException, ServletException {
+    request.getRequestDispatcher("/logoff").forward(request, response);
+
+    //Updates lastConnection of the user.
+    String username = (String) request.getSession().getAttribute("user");
+    if (username != null)
+    {
+      User userLastConnection = userStore.getUser(username);
+      userLastConnection.setLastConnection(Instant.now());
+      userStore.updateUser(userLastConnection);
+    }
+}
   /**
    * This function fires when a user submits the logoff form.
    */
@@ -33,7 +55,16 @@ public class LogoffServlet extends HttpServlet {
   @Override 
   public void doPost(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
-      	request.getSession().removeAttribute("user");
-      	response.sendRedirect("/");
+      //Updates lastConnection of the user.
+      String username = (String) request.getSession().getAttribute("user");
+      if (username != null)
+      {
+        User userLastConnection = userStore.getUser(username);
+        userLastConnection.setLastConnection(Instant.now());
+        userStore.updateUser(userLastConnection);
       }
+
+    request.getSession().removeAttribute("user");
+    response.sendRedirect("/");
+  }
 }

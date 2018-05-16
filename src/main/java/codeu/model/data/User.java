@@ -14,7 +14,9 @@
 
 package codeu.model.data;
 
+import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.util.Date;
 import java.util.UUID;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +32,7 @@ public class User {
   private String aboutMe;
   private final MessageStore messageStore;
   private final ConversationStore conversationStore;
+  private Instant lastConnection;
 
   /**
    * Constructs a new User.
@@ -39,8 +42,9 @@ public class User {
    * @param creation the creation time of this User
    * @param password the password of this User
    * @param aboutMe the about me text of the User Profile
+   * @param lastConnection the last active session of the User.
    */
-  public User(UUID id, String name, Instant creation, String password, String aboutMe) {
+  public User(UUID id, String name, Instant creation, String password, String aboutMe, Instant lastConnection) {
     this.id = id;
     this.name = name;
     this.creation = creation;
@@ -48,6 +52,7 @@ public class User {
     this.aboutMe = aboutMe;
     this.messageStore = MessageStore.getInstance();
     this.conversationStore = ConversationStore.getInstance();
+    this.lastConnection = lastConnection;
   }
 
   /** Returns the ID of this User. */
@@ -82,8 +87,28 @@ public class User {
       return messagesByUser;
   }
 
-  public String getConversationTitle(UUID conversationId){
+  public String getConversationTitle(UUID conversationId) {
       return conversationStore.getConversationTitleWithId(conversationId);
   }
 
+  public void removeMessage(Message message) {
+      messageStore.removeMessage(message);
+  }
+
+  /** Returns the last connection of this User. */
+  public Instant getLastConnection() {
+    return this.lastConnection;
+  }
+
+  /** Returns the last connection of this User as a formatted string. */
+  public String getLastConnectionFomatted() {
+    Date lastConnectionDate = Date.from(lastConnection);
+    SimpleDateFormat formatter = new SimpleDateFormat("hh:mm a, dd MMMM YYYY");
+    return formatter.format(lastConnectionDate);
+  }
+  /** Sets the last connection of the User. */
+  public void setLastConnection(Instant lastConnection) {
+    this.lastConnection = lastConnection;
+  }
+  
 }

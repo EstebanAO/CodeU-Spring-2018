@@ -5,6 +5,8 @@ import codeu.model.store.persistence.PersistentStorageAgent;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.UUID;
 import org.junit.Assert;
 import org.junit.Before;
@@ -17,22 +19,24 @@ public class UserStoreTest {
   private PersistentStorageAgent mockPersistentStorageAgent;
 
   private final User USER_ONE =
-      new User(UUID.randomUUID(), "test_username_one", Instant.ofEpochMilli(1000), "test_password_one", "Write about you...");
+      new User(UUID.randomUUID(), "test_username_one", Instant.ofEpochMilli(1000), "test_password_one", "Write about you...", Instant.now());
   private final User USER_TWO =
-      new User(UUID.randomUUID(), "test_username_two", Instant.ofEpochMilli(2000),"test_password_two", "Write about you...");
+      new User(UUID.randomUUID(), "test_username_two", Instant.ofEpochMilli(2000),"test_password_two", "Write about you...", Instant.now());
   private final User USER_THREE =
-      new User(UUID.randomUUID(), "test_username_three", Instant.ofEpochMilli(3000), "test_password_three", "Write about you...");
+      new User(UUID.randomUUID(), "test_username_three", Instant.ofEpochMilli(3000), "test_password_three", "Write about you...", Instant.now());
 
   @Before
   public void setup() {
     mockPersistentStorageAgent = Mockito.mock(PersistentStorageAgent.class);
     userStore = UserStore.getTestInstance(mockPersistentStorageAgent);
 
-    final List<User> userList = new ArrayList<>();
-    userList.add(USER_ONE);
-    userList.add(USER_TWO);
-    userList.add(USER_THREE);
-    userStore.setUsers(userList);
+    final List<User> users = new ArrayList< User>();
+    users.add(USER_ONE);
+    users.add(USER_TWO);
+    users.add(USER_THREE);
+    for (User user : users) {
+      userStore.addUser(user);
+    }
   }
 
   @Test
@@ -65,7 +69,7 @@ public class UserStoreTest {
 
   @Test
   public void testAddUser() {
-    User inputUser = new User(UUID.randomUUID(), "test_username", Instant.now(),"test_password", "Write about you...");
+    User inputUser = new User(UUID.randomUUID(), "test_username", Instant.now(),"test_password", "Write about you...", Instant.now());
 
     userStore.addUser(inputUser);
     User resultUser = userStore.getUser("test_username");

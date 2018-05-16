@@ -91,6 +91,9 @@ public class LoginServlet extends HttpServlet {
     if (userStore.isUserRegistered(username)) {
       User user = userStore.getUser(username);
       if (BCrypt.checkpw(password, user.getPassword())) {
+        //Updates the last connection of the User
+        user.setLastConnection(Instant.now());
+        userStore.updateUser(user);
         request.getSession().setAttribute("user", username);
         response.sendRedirect("/conversations");
       } else {

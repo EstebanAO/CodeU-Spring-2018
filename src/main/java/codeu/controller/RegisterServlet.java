@@ -63,7 +63,7 @@ public class RegisterServlet extends HttpServlet {
       return;
     }
     String aboutMe = "Write about you...";
-    User user = new User(UUID.randomUUID(), username, Instant.now(), passwordHash, aboutMe);
+    User user = new User(UUID.randomUUID(), username, Instant.now(), passwordHash, aboutMe, Instant.now());
     userStore.addUser(user);
     request.getSession().setAttribute("user", username);
     response.sendRedirect("/conversations");

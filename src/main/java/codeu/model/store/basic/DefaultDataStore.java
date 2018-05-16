@@ -18,6 +18,7 @@ import codeu.model.data.Conversation;
 import codeu.model.data.Message;
 import codeu.model.data.User;
 import codeu.model.store.persistence.PersistentStorageAgent;
+import com.google.common.collect.ImmutableSet;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -104,10 +105,11 @@ public class DefaultDataStore {
 
     for (int i = 0; i < DEFAULT_USER_COUNT; i++) {
       User user = new User(UUID.randomUUID(),
-        randomUsernames.get(i),
-        Instant.now(),
-        BCrypt.hashpw("password", BCrypt.gensalt()),
-              "Write about you...");
+              randomUsernames.get(i),
+              Instant.now(),
+              BCrypt.hashpw("password", BCrypt.gensalt()),
+              "Write about you...",
+              Instant.now());
       PersistentStorageAgent.getInstance().writeThrough(user);
       users.add(user);
     }
@@ -118,7 +120,7 @@ public class DefaultDataStore {
       User user = getRandomElement(users);
       String title = "Conversation_" + i;
       Conversation conversation =
-          new Conversation(UUID.randomUUID(), user.getId(), title, Instant.now());
+          new Conversation(UUID.randomUUID(), user.getId(), title, Instant.now(), ImmutableSet.of());
       PersistentStorageAgent.getInstance().writeThrough(conversation);
       conversations.add(conversation);
     }
@@ -131,8 +133,8 @@ public class DefaultDataStore {
       String content = getRandomMessageContent();
 
       Message message =
-          new Message(
-              UUID.randomUUID(), conversation.getId(), author.getId(), content, Instant.now());
+              new Message(
+                      UUID.randomUUID(), conversation.getId(), author.getId(), content, Instant.now());
       PersistentStorageAgent.getInstance().writeThrough(message);
       messages.add(message);
     }
@@ -192,12 +194,12 @@ public class DefaultDataStore {
 
   private String getRandomMessageContent() {
     String loremIpsum =
-        "dolorem ipsum, quia dolor sit amet consectetur adipiscing velit, "
-            + "sed quia non numquam do eius modi tempora incididunt, ut labore et dolore magnam "
-            + "aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam "
-            + "corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum "
-            + "iure reprehenderit, qui in ea voluptate velit esse, quam nihil molestiae consequatur, vel illum, "
-            + "qui dolorem eum fugiat, quo voluptas nulla pariatur";
+            "dolorem ipsum, quia dolor sit amet consectetur adipiscing velit, "
+                    + "sed quia non numquam do eius modi tempora incididunt, ut labore et dolore magnam "
+                    + "aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam "
+                    + "corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum "
+                    + "iure reprehenderit, qui in ea voluptate velit esse, quam nihil molestiae consequatur, vel illum, "
+                    + "qui dolorem eum fugiat, quo voluptas nulla pariatur";
 
     int startIndex = (int) (Math.random() * (loremIpsum.length() - 100));
     int endIndex = (int) (startIndex + 10 + Math.random() * 90);
