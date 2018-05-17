@@ -106,12 +106,10 @@ public class PersistentDataStore {
                 String title = (String) entity.getProperty("title");
                 Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
                 String usersString = entity.getProperty("users") != null ? (String) entity.getProperty("users") : null;
+                UUID[] userIdArray = (UUID[]) entity.getProperty("users");
                 Set<UUID> users = new HashSet<>();
-                if (usersString != null && !usersString.equals("null")) {
-                    String[] elements = usersString.substring(1, usersString.length() - 1).split(", ");
-                    for (String item : elements) {
-                        users.add(UUID.fromString(item));
-                    }
+                if (userIdArray != null) {
+                      userIdArray.addAll(users);
                 }
                 Conversation conversation = new Conversation(uuid, ownerUuid, title, creationTime, users);
                 conversations.add(conversation);
@@ -202,7 +200,7 @@ public class PersistentDataStore {
     conversationEntity.setProperty("owner_uuid", conversation.getOwnerId().toString());
     conversationEntity.setProperty("title", conversation.getTitle());
     conversationEntity.setProperty("creation_time", conversation.getCreationTime().toString());
-    conversationEntity.setProperty("users", conversation.getUsersString());
+     conversationEntity.setProperty("users", conversation.getUsers().toArray());
     datastore.put(conversationEntity);
   }
 }
