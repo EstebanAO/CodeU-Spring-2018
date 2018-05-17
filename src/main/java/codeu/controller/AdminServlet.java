@@ -61,6 +61,15 @@ public void setUserStore(UserStore userStore) {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response)
       throws IOException, ServletException {
+    //Updates lastConnection of the user.
+    String username = (String) request.getSession().getAttribute("user");
+    if (username != null)
+    {
+      User userLastConnection = userStore.getUser(username);
+      userLastConnection.setLastConnection(Instant.now());
+      userStore.updateUser(userLastConnection);
+    }
+
     int conversationsCount = conversationStore.getConversationsCount();
     int usersCount = userStore.getUsersCount();
     int messagesCount = messageStore.getMessagesCount();

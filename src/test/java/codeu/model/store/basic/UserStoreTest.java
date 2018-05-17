@@ -19,11 +19,11 @@ public class UserStoreTest {
   private PersistentStorageAgent mockPersistentStorageAgent;
 
   private final User USER_ONE =
-      new User(UUID.randomUUID(), "test_username_one", Instant.ofEpochMilli(1000), "test_password_one", "Write about you...");
+      new User(UUID.randomUUID(), "test_username_one", Instant.ofEpochMilli(1000), "test_password_one", "Write about you...", Instant.now());
   private final User USER_TWO =
-      new User(UUID.randomUUID(), "test_username_two", Instant.ofEpochMilli(2000),"test_password_two", "Write about you...");
+      new User(UUID.randomUUID(), "test_username_two", Instant.ofEpochMilli(2000),"test_password_two", "Write about you...", Instant.now());
   private final User USER_THREE =
-      new User(UUID.randomUUID(), "test_username_three", Instant.ofEpochMilli(3000), "test_password_three", "Write about you...");
+      new User(UUID.randomUUID(), "test_username_three", Instant.ofEpochMilli(3000), "test_password_three", "Write about you...", Instant.now());
 
   @Before
   public void setup() {
@@ -69,7 +69,7 @@ public class UserStoreTest {
 
   @Test
   public void testAddUser() {
-    User inputUser = new User(UUID.randomUUID(), "test_username", Instant.now(),"test_password", "Write about you...");
+    User inputUser = new User(UUID.randomUUID(), "test_username", Instant.now(),"test_password", "Write about you...", Instant.now());
 
     userStore.addUser(inputUser);
     User resultUser = userStore.getUser("test_username");
