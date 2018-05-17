@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.Set;
 import java.util.HashSet;
+import java.util.Arrays;
 
 /**
  * This class handles all interactions with Google App Engine's Datastore service. On startup it
@@ -108,12 +109,9 @@ public class PersistentDataStore {
                 UUID ownerUuid = UUID.fromString((String) entity.getProperty("owner_uuid"));
                 String title = (String) entity.getProperty("title");
                 Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
-                String usersString = entity.getProperty("users") != null ? (String) entity.getProperty("users") : null;
+                //String usersString = entity.getProperty("users") != null ? (String) entity.getProperty("users") : null;
                 UUID[] userIdArray = (UUID[]) entity.getProperty("users");
-                Set<UUID> users = new HashSet<>();
-                if (userIdArray != null) {
-                      userIdArray.addAll(users);
-                }
+                Set<UUID> users = (userIdArray != null) ?  new HashSet<>(Arrays.asList(userIdArray)) : new HashSet<>();
                 Conversation conversation = new Conversation(uuid, ownerUuid, title, creationTime, users);
                 conversations.add(conversation);
             } catch (Exception e) {
@@ -168,7 +166,7 @@ public class PersistentDataStore {
     userEntity.setProperty("creation_time", user.getCreationTime().toString());
     userEntity.setProperty("password", user.getPassword().toString());
     userEntity.setProperty("aboutMe", user.getAboutMe());
-        userEntity.setProperty("last_connection", user.getLastConnection().toString());
+    userEntity.setProperty("last_connection", user.getLastConnection().toString());
     datastore.put(userEntity);
   }
 
@@ -204,7 +202,7 @@ public class PersistentDataStore {
     conversationEntity.setProperty("owner_uuid", conversation.getOwnerId().toString());
     conversationEntity.setProperty("title", conversation.getTitle());
     conversationEntity.setProperty("creation_time", conversation.getCreationTime().toString());
-     conversationEntity.setProperty("users", conversation.getUsers().toArray());
+    conversationEntity.setProperty("users", conversation.getUsers().toArray());
     datastore.put(conversationEntity);
   }
 }
