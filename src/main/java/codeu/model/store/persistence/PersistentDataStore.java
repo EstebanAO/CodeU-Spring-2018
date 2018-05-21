@@ -110,7 +110,7 @@ public class PersistentDataStore {
                 Instant creationTime = Instant.parse((String) entity.getProperty("creation_time"));
                 String usersString = entity.getProperty("users") != null ? (String) entity.getProperty("users") : null;
                 Set<UUID> users = new HashSet<>();
-                if (usersString != null && !usersString.equals("null")) {
+                if (usersString != null && !usersString.equals("[]")) {
                     String[] elements = usersString.substring(1, usersString.length() - 1).split(", ");
                     for (String item : elements) {
                         users.add(UUID.fromString(item));
