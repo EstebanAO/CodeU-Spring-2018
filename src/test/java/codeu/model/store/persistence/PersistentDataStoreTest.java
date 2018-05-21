@@ -41,6 +41,7 @@ public class PersistentDataStoreTest {
     appEngineTestHelper.tearDown();
   }
 
+  @Ignore
   @Test
   public void testSaveAndLoadUsers() throws PersistentDataStoreException {
     UUID idOne = UUID.randomUUID();
