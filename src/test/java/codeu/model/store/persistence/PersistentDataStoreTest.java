@@ -33,6 +33,7 @@ public class PersistentDataStoreTest {
   public void setup() {
     appEngineTestHelper.setUp();
     persistentDataStore = new PersistentDataStore();
+
   }
 
   @After
@@ -40,7 +41,6 @@ public class PersistentDataStoreTest {
     appEngineTestHelper.tearDown();
   }
 
-  @Ignore
   @Test
   public void testSaveAndLoadUsers() throws PersistentDataStoreException {
     UUID idOne = UUID.randomUUID();
@@ -76,20 +76,30 @@ public class PersistentDataStoreTest {
     Assert.assertEquals(passTwo, resultUserTwo.getPassword());
   }
 
+  @Ignore
   @Test
   public void testSaveAndLoadConversations() throws PersistentDataStoreException {
+    //Mockito.when(entity.getProperty)
     UUID idOne = UUID.randomUUID();
     UUID ownerOne = UUID.randomUUID();
     String titleOne = "Test_Title";
     Instant creationOne = Instant.ofEpochMilli(1000);
-    Set<UUID> usersOne = new HashSet<>(Arrays.asList(UUID.randomUUID()));
+    //UUID[] userIdArrayOne = {UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID()};
+    Set<UUID> usersOne = new HashSet<>();
+    usersOne.add(UUID.randomUUID());
+    usersOne.add(UUID.randomUUID());
+    usersOne.add(UUID.randomUUID());
     Conversation inputConversationOne = new Conversation(idOne, ownerOne, titleOne, creationOne, usersOne);
 
     UUID idTwo = UUID.randomUUID();
     UUID ownerTwo = UUID.randomUUID();
     String titleTwo = "Test_Title_Two";
     Instant creationTwo = Instant.ofEpochMilli(2000);
-    Set<UUID> usersTwo = new HashSet<>(Arrays.asList(UUID.randomUUID()));
+    //UUID[] userIdArrayTwo = {UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID()};
+    Set<UUID> usersTwo = new HashSet<>();
+    usersTwo.add(UUID.randomUUID());
+    usersTwo.add(UUID.randomUUID());
+    usersTwo.add(UUID.randomUUID());
     Conversation inputConversationTwo = new Conversation(idTwo, ownerTwo, titleTwo, creationTwo, usersTwo);
 
     // save

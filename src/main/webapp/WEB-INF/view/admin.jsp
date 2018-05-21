@@ -4,7 +4,7 @@
 <%@ page import="codeu.model.data.User" %>
 <%@ page import="codeu.model.data.Conversation" %>
 <%@ page import="codeu.model.store.basic.UserStore" %>
-<% 
+<%
 UserStore userStore = UserStore.getInstance();
 %>
 
@@ -36,9 +36,9 @@ UserStore userStore = UserStore.getInstance();
       <a href="/admin">Administrator</a>
 </nav>
 
-  <div id= "container"> 
+  <div id= "container">
     <h1>Administrator</h1>
-    
+
     <% if (request.getAttribute("error") != null) { %>
       <h2 style="color:red"><%= request.getAttribute("error") %></h2>
     <% } %>
@@ -59,14 +59,14 @@ UserStore userStore = UserStore.getInstance();
         <%= request.getAttribute("newestUser") %>
       </li>
       <li><strong>Most recent message:</strong>
-        <%= request.getAttribute("mostRecentUser") %>, 
+        <%= request.getAttribute("mostRecentUser") %>,
         <%= request.getAttribute("mostRecentTime") %>
       </li>
     </ul>
 
-    
+
     <h2>All Users</h2>
-    <% 
+    <%
     List<User> users = (List<User>) request.getAttribute("users");
     if(users == null){
     %>
@@ -92,6 +92,6 @@ UserStore userStore = UserStore.getInstance();
 
   </div>
 
-
+  
 </body>
 </html>
