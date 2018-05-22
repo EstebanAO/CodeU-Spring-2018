@@ -33,7 +33,6 @@ public class PersistentDataStoreTest {
   public void setup() {
     appEngineTestHelper.setUp();
     persistentDataStore = new PersistentDataStore();
-
   }
 
   @After
@@ -41,7 +40,6 @@ public class PersistentDataStoreTest {
     appEngineTestHelper.tearDown();
   }
 
-  @Ignore
   @Test
   public void testSaveAndLoadUsers() throws PersistentDataStoreException {
     UUID idOne = UUID.randomUUID();
@@ -55,37 +53,41 @@ public class PersistentDataStoreTest {
     Instant creationTwo = Instant.ofEpochMilli(2000);
     String passTwo = "test_password_two";
     User inputUserTwo = new User(idTwo, nameTwo, creationTwo, passTwo, "Write about you...", Instant.now());
-
+    Assert.assertNotEquals(idOne, idTwo);
     // save
     persistentDataStore.writeThrough(inputUserOne);
     persistentDataStore.writeThrough(inputUserTwo);
 
     // load
     List<User> resultUsers = persistentDataStore.loadUsers();
+    Assert.assertEquals(2, resultUsers.size());
 
     // confirm that what we saved matches what we loaded
     User resultUserOne = resultUsers.get(0);
+    User resultUserTwo = resultUsers.get(1);
+    if (!resultUserOne.getId().equals(idOne))
+    {
+      User tempUser = resultUserOne;
+      resultUserOne = resultUserTwo;
+      resultUserTwo = tempUser;
+    }
     Assert.assertEquals(idOne, resultUserOne.getId());
     Assert.assertEquals(nameOne, resultUserOne.getName());
     Assert.assertEquals(creationOne, resultUserOne.getCreationTime());
     Assert.assertEquals(passOne, resultUserOne.getPassword());
 
-    User resultUserTwo = resultUsers.get(1);
     Assert.assertEquals(idTwo, resultUserTwo.getId());
     Assert.assertEquals(nameTwo, resultUserTwo.getName());
     Assert.assertEquals(creationTwo, resultUserTwo.getCreationTime());
     Assert.assertEquals(passTwo, resultUserTwo.getPassword());
   }
 
-  @Ignore
   @Test
   public void testSaveAndLoadConversations() throws PersistentDataStoreException {
-    //Mockito.when(entity.getProperty)
     UUID idOne = UUID.randomUUID();
     UUID ownerOne = UUID.randomUUID();
     String titleOne = "Test_Title";
     Instant creationOne = Instant.ofEpochMilli(1000);
-    //UUID[] userIdArrayOne = {UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID()};
     Set<UUID> usersOne = new HashSet<>();
     usersOne.add(UUID.randomUUID());
     usersOne.add(UUID.randomUUID());
@@ -96,7 +98,6 @@ public class PersistentDataStoreTest {
     UUID ownerTwo = UUID.randomUUID();
     String titleTwo = "Test_Title_Two";
     Instant creationTwo = Instant.ofEpochMilli(2000);
-    //UUID[] userIdArrayTwo = {UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID()};
     Set<UUID> usersTwo = new HashSet<>();
     usersTwo.add(UUID.randomUUID());
     usersTwo.add(UUID.randomUUID());
@@ -126,7 +127,7 @@ public class PersistentDataStoreTest {
     Assert.assertEquals(usersTwo, resultConversationTwo.getUsers());
   }
 
-  @Ignore
+
   @Test
   public void testSaveAndLoadMessages() throws PersistentDataStoreException {
     UUID idOne = UUID.randomUUID();
@@ -137,17 +138,8 @@ public class PersistentDataStoreTest {
     Message inputMessageOne =
             new Message(idOne, conversationOne, authorOne, contentOne, creationOne);
 
-    UUID idTwo = UUID.randomUUID();
-    UUID conversationTwo = UUID.randomUUID();
-    UUID authorTwo = UUID.randomUUID();
-    String contentTwo = "test content one";
-    Instant creationTwo = Instant.ofEpochMilli(2000);
-    Message inputMessageTwo =
-            new Message(idTwo, conversationTwo, authorTwo, contentTwo, creationTwo);
-
     // save
     persistentDataStore.writeThrough(inputMessageOne);
-    persistentDataStore.writeThrough(inputMessageTwo);
 
     // load
     List<Message> resultMessages = persistentDataStore.loadMessages();
@@ -159,12 +151,5 @@ public class PersistentDataStoreTest {
     Assert.assertEquals(authorOne, resultMessageOne.getAuthorId());
     Assert.assertEquals(contentOne, resultMessageOne.getContent());
     Assert.assertEquals(creationOne, resultMessageOne.getCreationTime());
-
-    Message resultMessageTwo = resultMessages.get(1);
-    Assert.assertEquals(idTwo, resultMessageTwo.getId());
-    Assert.assertEquals(conversationTwo, resultMessageTwo.getConversationId());
-    Assert.assertEquals(authorTwo, resultMessageTwo.getAuthorId());
-    Assert.assertEquals(contentTwo, resultMessageTwo.getContent());
-    Assert.assertEquals(creationTwo, resultMessageTwo.getCreationTime());
   }
 }
